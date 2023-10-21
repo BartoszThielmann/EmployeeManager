@@ -2,8 +2,10 @@ package com.bartoszthielmann.employeemanager.controller;
 
 import com.bartoszthielmann.employeemanager.entity.Employee;
 import com.bartoszthielmann.employeemanager.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,9 +51,11 @@ public class EmployeeController {
     }
 
     @PostMapping("/save")
-    public String saveEmployee(@ModelAttribute Employee employee) {
+    public String saveEmployee(@Valid @ModelAttribute Employee employee, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "employee-form";
+        }
         employeeService.save(employee);
-
         return "redirect:";
     }
 }

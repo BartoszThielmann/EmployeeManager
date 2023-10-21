@@ -1,6 +1,10 @@
 package com.bartoszthielmann.employeemanager.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="employee")
@@ -11,12 +15,20 @@ public class Employee {
     @Column(name="id")
     private int id;
 
+    @NotNull(message="This is a required field")
+    @Size(min=1, message="This is a required field")
     @Column(name="first_name")
     private String firstName;
 
+    @NotNull(message="This is a required field")
+    @Size(min=1, message="This is a required field")
     @Column(name="last_name")
     private String lastName;
 
+    @NotNull(message="This is a required field")
+    @Size(min=1, message="This is a required field")
+    @Email(message = "Not a correct email address")
+    @Pattern(regexp=".*@bth\\.com$", message = "Email must be in domain @bth.com")
     @Column(name="email")
     private String email;
 

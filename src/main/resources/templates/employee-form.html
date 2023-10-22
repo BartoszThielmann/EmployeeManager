@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org/" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>Employees</title>
+    <title>Employee form</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
@@ -10,6 +10,7 @@
 
 </head>
 <body>
+<div th:insert="~{fragments/header :: header}"></div>
 <div class="container">
 <h2>Employee Form</h2>
 <form th:action="@{/employees/save}" th:object="${employee}" method="POST">

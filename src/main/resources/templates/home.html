@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org/" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>Employees</title>
+    <title>Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
@@ -10,9 +10,7 @@
 
 </head>
 <body>
-<div class="container-fluid p-5 bg-primary text-center">
-    <h1>Employee Manager home page</h1>
-</div>
+<div th:insert="~{fragments/header :: header}"></div>
 <div class="container text-center">
     <h3>Introduction</h3>
     Hello! This is a demo project made with Spring and Spring Boot.<br>
@@ -35,8 +33,6 @@
             </tr>
         </table>
     </div>
-    <h2>Links</h2>
-    <a th:href="@{employees/list}">Employee list</a>
 </div>
 </body>
 </html>

@@ -20,7 +20,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/list")
     public String showEmployees(Model model) {
         List<Employee> employees = employeeService.findAll();
         model.addAttribute("employees", employees);
@@ -32,7 +32,7 @@ public class EmployeeController {
     public String deleteEmployee(@RequestParam("id") int id) {
         employeeService.deleteById(id);
 
-        return "redirect:";
+        return "redirect:list";
     }
 
     @GetMapping("/create")
@@ -56,6 +56,6 @@ public class EmployeeController {
             return "employee-form";
         }
         employeeService.save(employee);
-        return "redirect:";
+        return "redirect:list";
     }
 }

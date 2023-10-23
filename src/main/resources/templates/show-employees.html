@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/" data-bs-theme="dark">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/" xmlns:sec="http://www.w3.org/1999/xhtml" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <title>Employees</title>
@@ -19,7 +19,7 @@
             <th>First name</th>
             <th>Last name</th>
             <th>Email</th>
-            <th>Actions</th>
+            <th sec:authorize="hasRole('ROLE_ADMIN')">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -27,14 +27,16 @@
             <td th:text="${employee.firstName}" />
             <td th:text="${employee.lastName}" />
             <td th:text="${employee.email}" />
-            <td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')">
                 <a th:href="@{/employees/delete(id=${employee.id})}" class="btn btn-danger">Delete</a>
                 <a th:href="@{/employees/update(id=${employee.id})}" class="btn btn-primary">Edit</a>
             </td>
         </tr>
         </tbody>
     </table>
-    <a th:href="@{/employees/create}" class="btn btn-primary">Add new employee</a>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+    <a th:href="@{/employees/create}" class="btn btn-primary" >Add new employee</a>
+    </div>
 </div>
 </body>
 </html>

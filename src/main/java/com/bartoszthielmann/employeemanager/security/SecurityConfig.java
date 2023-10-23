@@ -27,12 +27,17 @@ public class SecurityConfig {
         http
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/employees/list").hasRole("USER")
+                        .requestMatchers("/employees/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .permitAll()
                 )
+                .logout((logout) ->
+                        logout
+                            .logoutSuccessUrl("/"))
                 .httpBasic(withDefaults());
         return http.build();
     }

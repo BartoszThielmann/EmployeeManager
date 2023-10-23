@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   ...
 </head>
@@ -19,6 +19,25 @@
           <a class="nav-link" th:href="@{/employees/list}">Employee list</a>
         </li>
       </ul>
+      <div sec:authorize="!isAuthenticated()">
+        <ul class="nav navbar-nav navbar-right">
+          <form th:action="@{/login}" method="GET">
+            <input class="glyphicon glyphicon-log-out" type="submit" value="Log in">
+          </form>
+        </ul>
+      </div>
+      <div sec:authorize="isAuthenticated()">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="navbar-text  mx-4">
+            Logged in as: <span sec:authentication="principal.username"></span>
+        </li>
+        <li class="navbar-text">
+          <form th:action="@{/logout}" method="POST">
+            <input class="glyphicon glyphicon-log-out" type="submit" value="logout">
+          </form>
+        </li>
+      </ul>
+      </div>
     </div>
   </div>
 </nav>

@@ -1,9 +1,8 @@
-package com.bartoszthielmann.employeemanager.dao;
+package com.bartoszthielmann.employeemanager.dao.employee;
 
 import com.bartoszthielmann.employeemanager.entity.Employee;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import org.hibernate.sql.results.graph.embeddable.EmbeddableLoadingLogger;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

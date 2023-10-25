@@ -4,6 +4,12 @@ USE employee_schema;
 DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS authorities;
+DROP TABLE IF EXISTS workspace;
+DROP TABLE IF EXISTS office;
+
+###################################################
+##############SETUP EMPLOYEE TABLE#################
+###################################################
 
 CREATE TABLE employee(
   id int NOT NULL AUTO_INCREMENT,
@@ -12,6 +18,11 @@ CREATE TABLE employee(
   email varchar(45) NOT NULL UNIQUE,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+
+###################################################
+###########SETUP USERS AND AUTHORITIES#############
+###################################################
 
 CREATE TABLE users(
 	username varchar(50) NOT NULL PRIMARY KEY,
@@ -38,3 +49,52 @@ VALUES
 ("admin", "ROLE_ADMIN"),
 ("admin", "ROLE_USER"),
 ("User", "ROLE_USER");
+
+
+###################################################
+########SETUP OFFICE AND WORKSPACE TABLES##########
+###################################################
+
+CREATE TABLE `office` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`street_address` varchar(100) NOT NULL,
+	`city` varchar(100),
+	`country` varchar(2),
+	PRIMARY KEY(`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `workspace` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`name` varchar(50),
+	`office_id` int,
+	PRIMARY KEY(id),
+	KEY `FK_OFFICE_idx` (`office_id`),
+	CONSTRAINT `FK_OFFICE`
+	FOREIGN KEY (`office_id`)
+	REFERENCES `office` (`id`)
+	ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+INSERT INTO employee_schema.office(`street_address`, `city`, `country`)
+VALUES ("Willow Street 4", "Bydgoszcz", "PL");
+INSERT INTO employee_schema.workspace(`name`, `office_id`)
+VALUES
+("workspace 1", LAST_INSERT_ID()),
+("workspace 2", LAST_INSERT_ID()),
+("workspace 3", LAST_INSERT_ID());
+
+INSERT INTO employee_schema.office(`street_address`, `city`, `country`)
+VALUES ("Armrest Street 15", "Bydgoszcz", "PL");
+INSERT INTO employee_schema.workspace(`name`, `office_id`)
+VALUES
+("workspace 1", LAST_INSERT_ID()),
+("workspace 2", LAST_INSERT_ID()),
+("workspace 3", LAST_INSERT_ID());
+
+INSERT INTO employee_schema.office(`street_address`, `city`, `country`)
+VALUES ("Pond Street 18", "Berlin", "DE");
+INSERT INTO employee_schema.workspace(`name`, `office_id`)
+VALUES
+("workspace 1", LAST_INSERT_ID()),
+("workspace 2", LAST_INSERT_ID()),
+("workspace 3", LAST_INSERT_ID());

@@ -1,4 +1,4 @@
-package com.bartoszthielmann.employeemanager.dao;
+package com.bartoszthielmann.employeemanager.dao.employee;
 
 import com.bartoszthielmann.employeemanager.entity.Employee;
 import org.springframework.stereotype.Repository;

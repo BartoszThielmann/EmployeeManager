@@ -1,6 +1,6 @@
 package com.bartoszthielmann.employeemanager.service;
 
-import com.bartoszthielmann.employeemanager.dao.EmployeeDao;
+import com.bartoszthielmann.employeemanager.dao.employee.EmployeeDao;
 import com.bartoszthielmann.employeemanager.entity.Employee;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

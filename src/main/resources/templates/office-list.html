@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/" xmlns:sec="http://www.w3.org/1999/xhtml" data-bs-theme="dark">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <title>Offices</title>
@@ -19,6 +19,7 @@
             <th>Street Address</th>
             <th>City</th>
             <th>Country</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -26,6 +27,7 @@
             <td th:text="${office.streetAddress}" />
             <td th:text="${office.city}" />
             <td th:text="${office.country}" />
+            <td><a th:href="@{/reservations/create(id=${office.id})}" class="btn btn-primary">Make reservation</a></td>
         </tr>
         </tbody>
     </table>

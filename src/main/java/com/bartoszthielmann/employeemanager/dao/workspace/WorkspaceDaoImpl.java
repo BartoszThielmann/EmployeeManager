@@ -3,9 +3,11 @@ package com.bartoszthielmann.employeemanager.dao.workspace;
 import com.bartoszthielmann.employeemanager.entity.Workspace;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class WorkspaceDaoImpl implements WorkspaceDao {
 
     private EntityManager entityManager;
@@ -34,5 +36,14 @@ public class WorkspaceDaoImpl implements WorkspaceDao {
     @Override
     public void save(Workspace workspace) {
         entityManager.merge(workspace);
+    }
+
+    @Override
+    public List<Workspace> findWorkspacesByOfficeId(int id) {
+        TypedQuery<Workspace> query = entityManager.createQuery(
+                "FROM Workspace WHERE office.id = :id", Workspace.class);
+        query.setParameter("id", id);
+
+        return query.getResultList();
     }
 }

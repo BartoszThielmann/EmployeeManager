@@ -30,6 +30,9 @@ public class SecurityConfig {
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/employees/list").hasRole("USER")
                         .requestMatchers("/employees/**").hasRole("ADMIN")
+                        .requestMatchers("/offices/list").hasRole("USER")
+                        .requestMatchers("/offices/**").hasRole("ADMIN")
+                        .requestMatchers("/reservations/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

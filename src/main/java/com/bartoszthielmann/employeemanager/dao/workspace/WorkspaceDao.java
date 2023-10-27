@@ -13,4 +13,6 @@ public interface WorkspaceDao {
     public void deleteById(int id);
 
     public void save(Workspace workspace);
+
+    public List<Workspace> findWorkspacesByOfficeId(int id);
 }

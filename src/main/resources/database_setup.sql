@@ -98,3 +98,26 @@ VALUES
 ("workspace 1", LAST_INSERT_ID()),
 ("workspace 2", LAST_INSERT_ID()),
 ("workspace 3", LAST_INSERT_ID());
+
+###################################################
+########SETUP OFFICE RESERVATION TABLE##########
+###################################################
+
+CREATE TABLE reservation(
+	id int NOT NULL AUTO_INCREMENT,
+	`start` DATETIME(6),
+	`end` DATETIME(6),
+	employee_id int,
+	workspace_id int,
+	PRIMARY KEY(id),
+	KEY `FK_WORKSPACE_idx` (`workspace_id`),
+	CONSTRAINT `FK_WORKSPACE`
+	FOREIGN KEY (`workspace_id`)
+	REFERENCES `workspace` (`id`)
+	ON DELETE NO ACTION ON UPDATE NO ACTION,
+	KEY `FK_EMPLOYEE_idx` (`employee_id`),
+	CONSTRAINT `FK_EMPLOYEE`
+	FOREIGN KEY (`employee_id`)
+	REFERENCES `employee` (`id`)
+	ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

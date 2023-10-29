@@ -2,7 +2,10 @@ package com.bartoszthielmann.employeemanager.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
+@Table(name = "workspace")
 public class Workspace {
 
     @Id
@@ -16,6 +19,9 @@ public class Workspace {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "office_id")
     private Office office;
+
+    @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL)
+    private List<Reservation> reservations;
 
     public Workspace() {
     }
@@ -46,6 +52,14 @@ public class Workspace {
 
     public void setOffice(Office office) {
         this.office = office;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     @Override

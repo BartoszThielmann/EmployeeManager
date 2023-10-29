@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 @Entity
 @Table(name="employee")
 public class Employee {
@@ -31,6 +33,9 @@ public class Employee {
     @Pattern(regexp=".*@bth\\.com$", message = "Email must be in domain @bth.com")
     @Column(name="email")
     private String email;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<Reservation> reservations;
 
     public Employee() {}
 
@@ -70,6 +75,14 @@ public class Employee {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     @Override

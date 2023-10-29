@@ -2,9 +2,11 @@ package com.bartoszthielmann.employeemanager.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "office")
 public class Office {
 
     @Id
@@ -71,6 +73,13 @@ public class Office {
 
     public void setWorkspaces(List<Workspace> workspaces) {
         this.workspaces = workspaces;
+    }
+
+    public void addWorkspace() {
+        if (this.workspaces == null) {
+            this.workspaces = new ArrayList<>();
+        }
+        this.workspaces.add(new Workspace());
     }
 
     @Override

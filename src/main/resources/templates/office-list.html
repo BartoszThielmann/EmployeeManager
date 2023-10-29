@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/" data-bs-theme="dark">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/" xmlns:sec="http://www.w3.org/1999/xhtml" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <title>Offices</title>
@@ -27,10 +27,17 @@
             <td th:text="${office.streetAddress}" />
             <td th:text="${office.city}" />
             <td th:text="${office.country}" />
-            <td><a th:href="@{/reservations/create(id=${office.id})}" class="btn btn-primary">Make reservation</a></td>
+            <td>
+                <a th:href="@{/reservations/create(id=${office.id})}" class="btn btn-primary mx-1">Make reservation</a>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/offices/update(id=${office.id})}" class="btn btn-primary mx-1">Edit</a>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/offices/delete(id=${office.id})}" class="btn btn-danger mx-1">Delete</a>
+            </td>
         </tr>
         </tbody>
     </table>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <a th:href="@{/offices/create}" class="btn btn-primary" >Add new office</a>
+    </div>
 </div>
 </body>
 </html>

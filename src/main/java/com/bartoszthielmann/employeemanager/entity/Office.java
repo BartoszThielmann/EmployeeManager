@@ -1,6 +1,9 @@
 package com.bartoszthielmann.employeemanager.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +17,22 @@ public class Office {
     @Column(name = "id")
     private int id;
 
+    @NotBlank(message="This field can't be blank")
+    @Size(min=1, max=100, message="Length must be between 1-100")
     @Column(name = "street_address")
     private String streetAddress;
 
+    @NotBlank(message="This field can't be blank")
+    @Size(min=1, max = 100, message="Length must be between 1-100")
     @Column(name = "city")
     private String city;
 
+    @NotBlank(message="This field can't be blank")
+    @Size(min=2, max=2, message="Length must be 2")
     @Column(name = "country")
     private String country;
 
+    @Valid
     @OneToMany(mappedBy = "office", cascade = CascadeType.ALL)
     private List<Workspace> workspaces;
 

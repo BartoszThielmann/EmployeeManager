@@ -1,6 +1,7 @@
 package com.bartoszthielmann.employeemanager.service;
 
 import com.bartoszthielmann.employeemanager.dao.office.OfficeDao;
+import com.bartoszthielmann.employeemanager.entity.Workspace;
 import org.springframework.stereotype.Service;
 import com.bartoszthielmann.employeemanager.entity.Office;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,12 @@ public class OfficeService {
 
     @Transactional
     public void save(Office office) {
+        List<Workspace> workspacesList = office.getWorkspaces();
+        if (workspacesList != null) {
+            for (Workspace workspace : workspacesList) {
+                workspace.setOffice(office);
+            }
+        }
         officeDao.save(office);
     }
 }

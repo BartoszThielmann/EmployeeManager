@@ -1,12 +1,13 @@
 package com.bartoszthielmann.employeemanager.controller;
 
 import com.bartoszthielmann.employeemanager.entity.Office;
-import com.bartoszthielmann.employeemanager.entity.Workspace;
 import com.bartoszthielmann.employeemanager.service.OfficeService;
 import com.bartoszthielmann.employeemanager.service.WorkspaceService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,12 +45,9 @@ public class OfficeController {
     }
 
     @PostMapping("/save")
-    public String saveOffice(@ModelAttribute Office office) {
-        List<Workspace> workspacesList = office.getWorkspaces();
-        if (workspacesList != null) {
-            for (Workspace workspace : workspacesList) {
-                workspace.setOffice(office);
-            }
+    public String saveOffice(@Valid @ModelAttribute Office office, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "office-form";
         }
         officeService.save(office);
         return "redirect:list";

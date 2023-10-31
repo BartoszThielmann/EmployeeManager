@@ -16,18 +16,27 @@
     <form th:action="@{/offices/save}" th:object="${office}" method="POST">
         <input type="hidden" th:field="*{id}">
         <div class="mb-3">
-        <label for="streetAddress">Street address: </label>
-        <input type="text" th:field="*{streetAddress}" id="streetAddress">
+            <label for="streetAddress">Street address: </label>
+            <input type="text" th:field="*{streetAddress}" id="streetAddress">
+            <ul>
+                <li th:each="err: ${#fields.errors('streetAddress')}" th:text="${err}" style="color:red"></li>
+            </ul>
         </div>
 
         <div class="mb-3">
-        <label for="city">City: </label>
-        <input type="text" th:field="*{city}" id="city">
+            <label for="city">City: </label>
+            <input type="text" th:field="*{city}" id="city">
+            <ul>
+                <li th:each="err: ${#fields.errors('city')}" th:text="${err}" style="color:red"></li>
+            </ul>
         </div>
 
         <div class="mb-3">
-        <label for="country">Country: </label>
-        <input type="text" th:field="*{country}" id="country">
+            <label for="country">Country: </label>
+            <input type="text" th:field="*{country}" id="country">
+            <ul>
+                <li th:each="err: ${#fields.errors('country')}" th:text="${err}" style="color:red"></li>
+            </ul>
         </div>
 
         Workspaces:
@@ -40,6 +49,11 @@
                 </td>
                 <td>
                     <button type="submit" name="removeWorkspace" th:value="${stat.index}" class="btn btn-danger">Remove row</button>
+                </td>
+                <td>
+                    <ul>
+                        <li th:each="err: ${#fields.errors('${office.workspaces[__${stat.index}__].name}')}" th:text="${err}" style="color:red"></li>
+                    </ul>
                 </td>
             </tr>
         </table>

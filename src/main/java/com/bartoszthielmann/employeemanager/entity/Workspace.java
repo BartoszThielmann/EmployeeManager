@@ -1,6 +1,8 @@
 package com.bartoszthielmann.employeemanager.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -13,6 +15,8 @@ public class Workspace {
     @Column(name = "id")
     private int id;
 
+    @NotBlank(message="This field can't be blank")
+    @Size(min=1, max=50, message="Length must be between 1-50")
     @Column(name = "name")
     private String name;
 

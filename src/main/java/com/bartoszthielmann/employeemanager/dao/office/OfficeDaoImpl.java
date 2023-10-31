@@ -30,7 +30,9 @@ public class OfficeDaoImpl implements OfficeDao {
     @Override
     public void deleteById(int id) {
         Office office = entityManager.find(Office.class, id);
-        entityManager.remove(office);
+        if (office != null) {
+            entityManager.remove(office);
+        }
     }
 
     @Override

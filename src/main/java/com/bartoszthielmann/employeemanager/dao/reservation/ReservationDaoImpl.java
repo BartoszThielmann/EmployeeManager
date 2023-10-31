@@ -30,7 +30,9 @@ public class ReservationDaoImpl implements ReservationDao {
     @Override
     public void deleteById(int id) {
         Reservation reservation = entityManager.find(Reservation.class, id);
-        entityManager.remove(reservation);
+        if (reservation != null) {
+            entityManager.remove(reservation);
+        }
     }
 
     @Override

@@ -30,7 +30,9 @@ public class WorkspaceDaoImpl implements WorkspaceDao {
     @Override
     public void deleteById(int id) {
         Workspace workspace = entityManager.find(Workspace.class, id);
-        entityManager.remove(workspace);
+        if (workspace != null) {
+            entityManager.remove(workspace);
+        }
     }
 
     @Override

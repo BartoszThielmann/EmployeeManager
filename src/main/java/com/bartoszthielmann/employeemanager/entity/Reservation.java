@@ -1,5 +1,6 @@
 package com.bartoszthielmann.employeemanager.entity;
 
+import com.bartoszthielmann.employeemanager.entity.employee.Employee;
 import jakarta.persistence.*;
 
 import java.sql.Date;

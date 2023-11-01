@@ -1,6 +1,6 @@
 package com.bartoszthielmann.employeemanager.controller;
 
-import com.bartoszthielmann.employeemanager.entity.Employee;
+import com.bartoszthielmann.employeemanager.entity.employee.Employee;
 import com.bartoszthielmann.employeemanager.entity.Reservation;
 import com.bartoszthielmann.employeemanager.entity.ReservationForm;
 import com.bartoszthielmann.employeemanager.entity.Workspace;

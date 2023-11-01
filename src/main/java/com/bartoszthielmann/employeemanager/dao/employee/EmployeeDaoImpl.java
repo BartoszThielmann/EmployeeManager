@@ -1,7 +1,8 @@
 package com.bartoszthielmann.employeemanager.dao.employee;
 
-import com.bartoszthielmann.employeemanager.entity.Employee;
+import com.bartoszthielmann.employeemanager.entity.employee.Employee;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
@@ -38,5 +39,18 @@ public class EmployeeDaoImpl implements EmployeeDao {
     @Override
     public void save(Employee employee) {
         entityManager.merge(employee);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        TypedQuery<Employee> query = entityManager.createQuery(
+                "select e from Employee e where e.email = :email", Employee.class);
+        query.setParameter("email", email);
+        try {
+            query.getSingleResult();
+            return true;
+        } catch (NoResultException ex) {
+            return false;
+        }
     }
 }

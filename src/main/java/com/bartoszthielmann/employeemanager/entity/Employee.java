@@ -31,7 +31,7 @@ public class Employee {
     @Size(min=1, message="This is a required field")
     @Email(message = "Not a correct email address")
     @Pattern(regexp=".*@bth\\.com$", message = "Email must be in domain @bth.com")
-    @Column(name="email")
+    @Column(name="email", unique = true)
     private String email;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)

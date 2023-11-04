@@ -1,6 +1,6 @@
 package com.bartoszthielmann.employeemanager.dao.employee;
 
-import com.bartoszthielmann.employeemanager.entity.employee.Employee;
+import com.bartoszthielmann.employeemanager.entity.Employee;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
@@ -42,10 +42,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public boolean existsByEmail(String email) {
-        TypedQuery<Employee> query = entityManager.createQuery(
-                "select e from Employee e where e.email = :email", Employee.class);
-        query.setParameter("email", email);
+    public boolean exists(String fieldName, String value) {
+        // Workaround to have named parameter concatenated to a variable
+        String queryString = "select e from Employee e where e." + fieldName + " = :value";
+        TypedQuery<Employee> query = entityManager.createQuery(queryString, Employee.class);
+        query.setParameter("value", value);
         try {
             query.getSingleResult();
             return true;

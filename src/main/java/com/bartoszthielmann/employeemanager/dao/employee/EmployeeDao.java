@@ -1,6 +1,6 @@
 package com.bartoszthielmann.employeemanager.dao.employee;
 
-import com.bartoszthielmann.employeemanager.entity.employee.Employee;
+import com.bartoszthielmann.employeemanager.entity.Employee;
 
 import java.util.List;
 
@@ -15,5 +15,5 @@ public interface EmployeeDao {
 
     public void save(Employee employee);
 
-    public boolean existsByEmail(String email);
+    public boolean exists(String fieldName, String value);
 }

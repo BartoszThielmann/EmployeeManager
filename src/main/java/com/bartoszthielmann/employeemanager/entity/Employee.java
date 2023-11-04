@@ -1,6 +1,7 @@
-package com.bartoszthielmann.employeemanager.entity.employee;
+package com.bartoszthielmann.employeemanager.entity;
 
-import com.bartoszthielmann.employeemanager.entity.Reservation;
+import com.bartoszthielmann.employeemanager.validation.Unique;
+import com.bartoszthielmann.employeemanager.service.EmployeeService;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -31,7 +32,7 @@ public class Employee {
     @NotNull(message="This is a required field")
     @Size(min=1, message="This is a required field")
     @Email(message = "Not a correct email address")
-    @UniqueEmail
+    @Unique(message = "Email must be unique", service = EmployeeService.class, fieldName = "email")
     @Pattern(regexp=".*@bth\\.com$", message = "Email must be in domain @bth.com")
     @Column(name="email", unique = true)
     private String email;

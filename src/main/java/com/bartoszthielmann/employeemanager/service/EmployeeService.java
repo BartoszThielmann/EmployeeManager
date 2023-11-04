@@ -1,14 +1,14 @@
 package com.bartoszthielmann.employeemanager.service;
 
 import com.bartoszthielmann.employeemanager.dao.employee.EmployeeDao;
-import com.bartoszthielmann.employeemanager.entity.employee.Employee;
+import com.bartoszthielmann.employeemanager.entity.Employee;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class EmployeeService {
+public class EmployeeService implements FieldValueExists {
 
     private EmployeeDao employeeDao;
 
@@ -32,5 +32,16 @@ public class EmployeeService {
     @Transactional
     public void save(Employee employee) {
         employeeDao.save(employee);
+    }
+
+    @Override
+    public boolean fieldValueExists(String fieldName, Object value) {
+        if (fieldName == null) {
+            throw new IllegalArgumentException("fieldName cannot be null");
+        }
+        if (value == null) {
+            return false;
+        }
+        return employeeDao.exists(fieldName, value.toString());
     }
 }

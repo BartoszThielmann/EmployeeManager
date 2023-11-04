@@ -1,6 +1,6 @@
 package com.bartoszthielmann.employeemanager.controller;
 
-import com.bartoszthielmann.employeemanager.entity.employee.Employee;
+import com.bartoszthielmann.employeemanager.entity.Employee;
 import com.bartoszthielmann.employeemanager.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;

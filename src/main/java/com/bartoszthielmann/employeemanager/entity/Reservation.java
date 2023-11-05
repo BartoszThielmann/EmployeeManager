@@ -1,11 +1,15 @@
 package com.bartoszthielmann.employeemanager.entity;
 
+import com.bartoszthielmann.employeemanager.validation.DateRange;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
 
 import java.sql.Date;
 
 @Entity
 @Table(name = "reservation")
+@DateRange(startField = "start", endField = "end")
 public class Reservation {
 
     @Id
@@ -13,14 +17,20 @@ public class Reservation {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "start") private Date start;
+    @Future
+    @Column(name = "start")
+    private Date start;
 
-    @Column(name = "end") private Date end;
+    @Future
+    @Column(name = "end")
+    private Date end;
 
+    @NotNull
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
+    @NotNull
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "workspace_id")
     private Workspace workspace;

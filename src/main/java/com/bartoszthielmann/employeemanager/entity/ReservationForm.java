@@ -1,7 +1,12 @@
 package com.bartoszthielmann.employeemanager.entity;
 
+import com.bartoszthielmann.employeemanager.validation.DateRange;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
+
 import java.sql.Date;
 
+@DateRange(startField = "start", endField = "end")
 public class ReservationForm {
     /**
      * Object used to gather user input in reservation-form.
@@ -9,10 +14,16 @@ public class ReservationForm {
      * information into actual Reservation object based on the fields.
      * This is sort of a DTO object.
     */
-    private Date start;
-    private Date end;
-    private int employeeId;
-    private int workspaceId;
+
+    @Future private Date start;
+
+    @Future private Date end;
+
+    @NotNull private int employeeId;
+
+    @NotNull private int workspaceId;
+
+    private int officeId;
 
     public ReservationForm() {
     }
@@ -47,6 +58,14 @@ public class ReservationForm {
 
     public void setWorkspaceId(int workspaceId) {
         this.workspaceId = workspaceId;
+    }
+
+    public int getOfficeId() {
+        return officeId;
+    }
+
+    public void setOfficeId(int officeId) {
+        this.officeId = officeId;
     }
 
     @Override

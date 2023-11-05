@@ -7,8 +7,10 @@ import com.bartoszthielmann.employeemanager.entity.Workspace;
 import com.bartoszthielmann.employeemanager.service.EmployeeService;
 import com.bartoszthielmann.employeemanager.service.ReservationService;
 import com.bartoszthielmann.employeemanager.service.WorkspaceService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,16 +42,21 @@ public class ReservationController {
     public String showAddForm(Model model, @RequestParam(name = "id") int id) {
         List<Employee> employees = employeeService.findAll();
         List<Workspace> workspaces = workspaceService.findWorkspacesByOfficeId(id);
-        Reservation reservation = new Reservation();
+        ReservationForm reservationForm = new ReservationForm();
+        reservationForm.setOfficeId(id);
         model.addAttribute("workspaces", workspaces);
         model.addAttribute("employees", employees);
-        model.addAttribute("reservationForm", new ReservationForm());
+        model.addAttribute("reservationForm", reservationForm);
 
         return "reservation-form";
     }
 
     @PostMapping("/save")
-    public String saveReservation(@ModelAttribute ReservationForm reservationForm) {
+    public String saveReservation(@Valid @ModelAttribute ReservationForm reservationForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            int officeId = reservationForm.getOfficeId();
+            return "redirect:create?id=" + officeId + "&Error";
+        }
         reservationService.createReservationFromForm(reservationForm);
         return "redirect:list";
     }

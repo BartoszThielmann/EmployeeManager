@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org/" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>Employee form</title>
+    <title>Reservation form</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
@@ -13,6 +13,9 @@
     <div th:insert="~{fragments/header :: header}"></div>
     <div class="container text-center mt-3">
     <form th:action="@{/reservations/save}" th:object="${reservationForm}" method="POST">
+        <div th:if="${param.Error != null}" class="alert alert-danger">
+            Form has some errors. Please verify input and try again.
+        </div>
         <div class="mb-3">
             <label for="employees">Employee: </label>
             <select th:object="${employees}" th:field="${reservationForm.employeeId}" id="employees">
@@ -29,14 +32,15 @@
 
         <div class="mb-3">
         <label for="start">Start date:</label>
-        <input type="date" id="start" name="trip-start" th:field="*{start}" min="2018-01-01" max="2030-12-31" />
+        <input type="date" id="start" th:field="*{start}" />
         </div>
 
         <div class="mb-3">
         <label for="end">End date:</label>
-        <input type="date" id="end" name="trip-start" th:field="*{end}" min="2018-01-01" max="2030-12-31" />
+        <input type="date" id="end" th:field="*{end}" />
         </div>
 
+        <input type="hidden" th:field="*{officeId}" th:value="*{officeId}">
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     </div>

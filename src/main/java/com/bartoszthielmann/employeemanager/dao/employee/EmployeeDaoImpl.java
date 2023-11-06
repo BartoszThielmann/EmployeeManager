@@ -42,11 +42,12 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public boolean exists(String fieldName, String value) {
+    public boolean exists(String fieldName, String value, Integer ignoredId) {
         // Workaround to have named parameter concatenated to a variable
-        String queryString = "select e from Employee e where e." + fieldName + " = :value";
+        String queryString = "select e from Employee e where e." + fieldName + " = :value and id != :ignoredId";
         TypedQuery<Employee> query = entityManager.createQuery(queryString, Employee.class);
         query.setParameter("value", value);
+        query.setParameter("ignoredId", ignoredId);
         try {
             query.getSingleResult();
             return true;

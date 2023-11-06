@@ -15,5 +15,5 @@ public interface EmployeeDao {
 
     public void save(Employee employee);
 
-    public boolean exists(String fieldName, String value);
+    public boolean exists(String fieldName, String value, Integer ignoredId);
 }

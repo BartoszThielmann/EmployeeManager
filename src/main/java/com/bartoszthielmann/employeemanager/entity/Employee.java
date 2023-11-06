@@ -12,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name="employee")
+@Unique(message = "Email already exists", service = EmployeeService.class, fieldName = "email", primaryKeyName = "id")
 public class Employee {
 
     @Id
@@ -32,7 +33,6 @@ public class Employee {
     @NotNull(message="This is a required field")
     @Size(min=1, message="This is a required field")
     @Email(message = "Not a correct email address")
-    @Unique(message = "Email must be unique", service = EmployeeService.class, fieldName = "email")
     @Pattern(regexp=".*@bth\\.com$", message = "Email must be in domain @bth.com")
     @Column(name="email", unique = true)
     private String email;

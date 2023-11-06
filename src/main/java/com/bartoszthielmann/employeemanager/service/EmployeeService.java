@@ -35,13 +35,10 @@ public class EmployeeService implements FieldValueExists {
     }
 
     @Override
-    public boolean fieldValueExists(String fieldName, Object value) {
-        if (fieldName == null) {
-            throw new IllegalArgumentException("fieldName cannot be null");
-        }
+    public boolean fieldValueExists(String fieldName, Object value, Object ignoredId) {
         if (value == null) {
             return false;
         }
-        return employeeDao.exists(fieldName, value.toString());
+        return employeeDao.exists(fieldName, (String) value, (Integer) ignoredId);
     }
 }

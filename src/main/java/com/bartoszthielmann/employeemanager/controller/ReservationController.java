@@ -60,4 +60,10 @@ public class ReservationController {
         reservationService.createReservationFromForm(reservationForm);
         return "redirect:list";
     }
+
+    @GetMapping("/delete")
+    public String deleteReservation(@RequestParam("id") int id) {
+        reservationService.deleteById(id);
+        return "redirect:list";
+    }
 }

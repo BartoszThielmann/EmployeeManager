@@ -41,4 +41,9 @@ public class ReservationService {
         reservation.setEnd(reservationForm.getEnd());
         reservationDao.save(reservation);
     }
+
+    @Transactional
+    public void deleteById(int id) {
+        reservationDao.deleteById(id);
+    }
 }

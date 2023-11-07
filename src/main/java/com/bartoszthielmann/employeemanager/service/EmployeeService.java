@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class EmployeeService {
+public class EmployeeService implements FieldValueExists {
 
     private EmployeeDao employeeDao;
 
@@ -32,5 +32,13 @@ public class EmployeeService {
     @Transactional
     public void save(Employee employee) {
         employeeDao.save(employee);
+    }
+
+    @Override
+    public boolean fieldValueExists(String fieldName, Object value, Object ignoredId) {
+        if (value == null) {
+            return false;
+        }
+        return employeeDao.exists(fieldName, (String) value, (Integer) ignoredId);
     }
 }

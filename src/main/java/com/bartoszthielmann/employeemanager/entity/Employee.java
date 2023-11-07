@@ -1,5 +1,7 @@
 package com.bartoszthielmann.employeemanager.entity;
 
+import com.bartoszthielmann.employeemanager.validation.Unique;
+import com.bartoszthielmann.employeemanager.service.EmployeeService;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name="employee")
+@Unique(message = "Email already exists", service = EmployeeService.class, fieldName = "email", primaryKeyName = "id")
 public class Employee {
 
     @Id

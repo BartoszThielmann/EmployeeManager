@@ -35,6 +35,9 @@
         <!-- Show error message -->
         <span th:if="${#fields.hasErrors('email')}"
               th:errors="*{email}"></span>
+        <!-- Not a pretty solution but works for now as there's only one class level validation -->
+        <span th:if="${#fields.hasErrors('${employee}')}"
+              th:errors="${employee}"></span>
     </div>
     <input type="submit" value="Submit" class="btn btn-primary">
 </form>

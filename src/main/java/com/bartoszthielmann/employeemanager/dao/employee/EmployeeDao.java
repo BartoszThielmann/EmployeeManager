@@ -1,7 +1,6 @@
 package com.bartoszthielmann.employeemanager.dao.employee;
 
 import com.bartoszthielmann.employeemanager.entity.Employee;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -15,4 +14,6 @@ public interface EmployeeDao {
     public void deleteById(int id);
 
     public void save(Employee employee);
+
+    public boolean exists(String fieldName, String value, Integer ignoredId);
 }

@@ -1,55 +1,88 @@
 CREATE DATABASE IF NOT EXISTS employee_schema;
 USE employee_schema;
 
-DROP TABLE IF EXISTS employee;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS authorities;
-DROP TABLE IF EXISTS workspace;
-DROP TABLE IF EXISTS office;
-
-###################################################
-##############SETUP EMPLOYEE TABLE#################
-###################################################
-
-CREATE TABLE employee(
-  id int NOT NULL AUTO_INCREMENT,
-  first_name varchar(45) NOT NULL,
-  last_name varchar(45) NOT NULL,
-  email varchar(45) NOT NULL UNIQUE,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `reservation`;
+DROP TABLE IF EXISTS `user_detail`;
+DROP TABLE IF EXISTS `user_role`;
+DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `role`;
+DROP TABLE IF EXISTS `workspace`;
+DROP TABLE IF EXISTS `office`;
 
 
 ###################################################
 ###########SETUP USERS AND AUTHORITIES#############
 ###################################################
 
-CREATE TABLE users(
-	username varchar(50) NOT NULL PRIMARY KEY,
+CREATE TABLE `user`(
+	`id` int NOT NULL AUTO_INCREMENT,
+	`username` varchar(50) NOT NULL,
 	`password` varchar(68) NOT NULL,
-	enabled BOOLEAN NOT NULL
+	`enabled` BOOLEAN NOT NULL,
+    PRIMARY KEY(`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-CREATE TABLE authorities (
-	username varchar(50) NOT NULL,
-	authority varchar(50) NOT NULL,
-	CONSTRAINT fk_authorities_users FOREIGN KEY(username) REFERENCES users(username)
+CREATE TABLE `role`(
+	`id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(50) NOT NULL,
+    PRIMARY KEY(`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-CREATE UNIQUE INDEX ix_auth_username ON authorities (username,authority);
 
-# username: admin; password: admin
-# username: user; password: user
-INSERT INTO users(username, `password`, enabled)
+CREATE TABLE `user_role`(
+    `user_id` INT NOT NULL,
+    `role_id` INT NOT NULL,
+	PRIMARY KEY(`user_id`, `role_id`),
+
+	KEY `FK_USER_idx` (`user_id`),
+	CONSTRAINT `FK_USER`
+	FOREIGN KEY (`user_id`)
+	REFERENCES `user` (`id`)
+	ON DELETE NO ACTION ON UPDATE NO ACTION,
+
+    KEY `FK_ROLE_idx` (`role_id`),
+	CONSTRAINT `FK_ROLE`
+	FOREIGN KEY (`role_id`)
+	REFERENCES `role` (`id`)
+	ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+# password: password123
+INSERT INTO `user`(`id`, `username`, `password`, `enabled`)
 VALUES
-("admin", "{bcrypt}$2a$12$BfaGxmubstltGghjKfh1IOyapbYuwflkv9nrf3Jz4vnF0JDxLxx3e", true),
-("user", "{bcrypt}$2a$12$P9Q0ttdau9M6DAruSiuu0eq0eiUlnwQYEgPz9xK5.gQmtEgR97pIW", true);
+(1, "jsalads", "{bcrypt}$2a$12$AQIEFZ4NlYMTMhW/JU39xeRt/GeYYht7brOOOSz0hF97KtKtEkeuK", true),
+(2, "ebradberry", "{bcrypt}$2a$12$AQIEFZ4NlYMTMhW/JU39xeRt/GeYYht7brOOOSz0hF97KtKtEkeuK", true),
+(3, "lpaul", "{bcrypt}$2a$12$AQIEFZ4NlYMTMhW/JU39xeRt/GeYYht7brOOOSz0hF97KtKtEkeuK", true);
 
-INSERT INTO authorities(username, authority)
+CREATE TABLE `user_detail`(
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `first_name` VARCHAR(45),
+    `last_name` VARCHAR(45),
+    `email` VARCHAR(45) UNIQUE,
+    `user_id` INT,
+    PRIMARY KEY(`id`),
+    KEY `FK_USER_idx` (`user_id`),
+    CONSTRAINT `FK_USER_BASE`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+INSERT INTO `user_detail`(`first_name`, `last_name`, `email`, `user_id`)
 VALUES
-("admin", "ROLE_ADMIN"),
-("admin", "ROLE_USER"),
-("User", "ROLE_USER");
+("Joey", "Salads", "jsalads@bth.com", 1),
+("Ethan", "Bradberry", "ebradberry@bth.com", 2),
+( "Logan", "Paul", "lpaul@bth.com", 3);
 
+INSERT INTO `role`(`id`, `name`)
+VALUES
+(1, "ROLE_ADMIN"),
+(2, "ROLE_EMPLOYEE");
+
+INSERT INTO `user_role`(`user_id`, `role_id`)
+VALUES
+(1, 1),
+(2, 2),
+(3, 2);
 
 ###################################################
 ########SETUP OFFICE AND WORKSPACE TABLES##########
@@ -100,24 +133,24 @@ VALUES
 ("workspace 3", LAST_INSERT_ID());
 
 ###################################################
-########SETUP OFFICE RESERVATION TABLE##########
+#############SETUP RESERVATION TABLE###############
 ###################################################
 
 CREATE TABLE reservation(
 	id int NOT NULL AUTO_INCREMENT,
 	`start` DATETIME(6),
 	`end` DATETIME(6),
-	employee_id int,
 	workspace_id int,
+    user_id int,
 	PRIMARY KEY(id),
 	KEY `FK_WORKSPACE_idx` (`workspace_id`),
 	CONSTRAINT `FK_WORKSPACE`
 	FOREIGN KEY (`workspace_id`)
 	REFERENCES `workspace` (`id`)
 	ON DELETE NO ACTION ON UPDATE NO ACTION,
-	KEY `FK_EMPLOYEE_idx` (`employee_id`),
-	CONSTRAINT `FK_EMPLOYEE`
-	FOREIGN KEY (`employee_id`)
-	REFERENCES `employee` (`id`)
+	KEY `FK_EMPLOYEE_idx` (`user_id`),
+	CONSTRAINT `FK_USER_RESERVATION`
+	FOREIGN KEY (`user_id`)
+	REFERENCES `user` (`id`)
 	ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

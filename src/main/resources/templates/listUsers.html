@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org/" xmlns:sec="http://www.w3.org/1999/xhtml" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>Employees</title>
+    <title>Users</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
@@ -12,7 +12,7 @@
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
 <div class="container">
-    <h2>Currently registered employees</h2>
+    <h2>Currently registered users</h2>
     <table class="table table-bordered">
         <thead>
             <tr class="table-primary">
@@ -23,19 +23,19 @@
             </tr>
         </thead>
         <tbody>
-        <tr th:each="employee : ${employees}">
-            <td th:text="${employee.firstName}" />
-            <td th:text="${employee.lastName}" />
-            <td th:text="${employee.email}" />
+        <tr th:each="user : ${users}">
+            <td th:text="${user.getUserDetail().getFirstName()}" />
+            <td th:text="${user.getUserDetail().getLastName()}" />
+            <td th:text="${user.getUserDetail().getEmail()}" />
             <td sec:authorize="hasRole('ROLE_ADMIN')">
-                <a th:href="@{/employees/delete(id=${employee.id})}" class="btn btn-danger">Delete</a>
-                <a th:href="@{/employees/update(id=${employee.id})}" class="btn btn-primary">Edit</a>
+                <a th:href="@{/users/delete(id=${user.id})}" class="btn btn-danger">Delete</a>
+                <a th:href="@{/users/update(id=${user.id})}" class="btn btn-primary">Edit</a>
             </td>
         </tr>
         </tbody>
     </table>
     <div sec:authorize="hasRole('ROLE_ADMIN')">
-    <a th:href="@{/employees/create}" class="btn btn-primary" >Add new employee</a>
+    <a th:href="@{/users/create}" class="btn btn-primary" >Add new employee</a>
     </div>
 </div>
 </body>

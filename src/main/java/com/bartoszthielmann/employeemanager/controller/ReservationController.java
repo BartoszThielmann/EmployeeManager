@@ -1,10 +1,10 @@
 package com.bartoszthielmann.employeemanager.controller;
 
-import com.bartoszthielmann.employeemanager.entity.Employee;
 import com.bartoszthielmann.employeemanager.entity.Reservation;
 import com.bartoszthielmann.employeemanager.entity.ReservationForm;
+import com.bartoszthielmann.employeemanager.entity.User;
 import com.bartoszthielmann.employeemanager.entity.Workspace;
-import com.bartoszthielmann.employeemanager.service.EmployeeService;
+import com.bartoszthielmann.employeemanager.service.UserService;
 import com.bartoszthielmann.employeemanager.service.ReservationService;
 import com.bartoszthielmann.employeemanager.service.WorkspaceService;
 import jakarta.validation.Valid;
@@ -21,13 +21,13 @@ public class ReservationController {
 
     private ReservationService reservationService;
     private WorkspaceService workspaceService;
-    private EmployeeService employeeService;
+    private UserService userService;
 
     public ReservationController(ReservationService reservationService, WorkspaceService workspaceService,
-                                 EmployeeService employeeService) {
+                                 UserService userService) {
         this.reservationService = reservationService;
         this.workspaceService = workspaceService;
-        this.employeeService = employeeService;
+        this.userService = userService;
     }
 
     @GetMapping("/list")
@@ -40,12 +40,12 @@ public class ReservationController {
 
     @GetMapping("/create")
     public String showAddForm(Model model, @RequestParam(name = "id") int id) {
-        List<Employee> employees = employeeService.findAll();
+        List<User> users = userService.findAll();
         List<Workspace> workspaces = workspaceService.findWorkspacesByOfficeId(id);
         ReservationForm reservationForm = new ReservationForm();
         reservationForm.setOfficeId(id);
         model.addAttribute("workspaces", workspaces);
-        model.addAttribute("employees", employees);
+        model.addAttribute("employees", users);
         model.addAttribute("reservationForm", reservationForm);
 
         return "reservation-form";

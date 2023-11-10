@@ -27,8 +27,8 @@ public class Reservation {
 
     @NotNull
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @NotNull
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -62,12 +62,12 @@ public class Reservation {
         this.end = end;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public User getUser() {
+        return user;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Workspace getWorkspace() {
@@ -83,7 +83,7 @@ public class Reservation {
         return "Reservation{" +
                 "start=" + start +
                 ", end=" + end +
-                ", employee=" + employee +
+                ", user=" + user +
                 ", workspace=" + workspace +
                 '}';
     }

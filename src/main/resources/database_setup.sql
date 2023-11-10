@@ -16,7 +16,7 @@ DROP TABLE IF EXISTS `office`;
 
 CREATE TABLE `user`(
 	`id` int NOT NULL AUTO_INCREMENT,
-	`username` varchar(50) NOT NULL,
+	`username` varchar(50) NOT NULL UNIQUE,
 	`password` varchar(68) NOT NULL,
 	`enabled` BOOLEAN NOT NULL,
     PRIMARY KEY(`id`)
@@ -81,6 +81,7 @@ VALUES
 INSERT INTO `user_role`(`user_id`, `role_id`)
 VALUES
 (1, 1),
+(1, 2),
 (2, 2),
 (3, 2);
 

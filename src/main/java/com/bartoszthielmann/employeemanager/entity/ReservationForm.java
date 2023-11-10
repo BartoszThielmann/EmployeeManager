@@ -19,7 +19,7 @@ public class ReservationForm {
 
     @Future private Date end;
 
-    @NotNull private int employeeId;
+    @NotNull private int userId;
 
     @NotNull private int workspaceId;
 
@@ -44,12 +44,12 @@ public class ReservationForm {
         this.end = end;
     }
 
-    public int getEmployeeId() {
-        return employeeId;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
+    public void setUserId(int employeeId) {
+        this.userId = employeeId;
     }
 
     public int getWorkspaceId() {
@@ -73,7 +73,7 @@ public class ReservationForm {
         return "ReservationForm{" +
                 "start=" + start +
                 ", end=" + end +
-                ", employeeId=" + employeeId +
+                ", userId=" + userId +
                 ", workspaceId=" + workspaceId +
                 '}';
     }

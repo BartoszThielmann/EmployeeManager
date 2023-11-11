@@ -2,6 +2,9 @@ package com.bartoszthielmann.employeemanager.service;
 
 import com.bartoszthielmann.employeemanager.dao.user.UserDao;
 import com.bartoszthielmann.employeemanager.entity.User;
+import com.bartoszthielmann.employeemanager.entity.UserDto;
+import com.bartoszthielmann.employeemanager.entity.UserInfo;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,9 +14,11 @@ import java.util.List;
 public class UserService implements FieldValueExists {
 
     private UserDao userDao;
+    private PasswordEncoder passwordEncoder;
 
-    public UserService(UserDao userDao) {
+    public UserService(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> findAll() {
@@ -30,7 +35,24 @@ public class UserService implements FieldValueExists {
     }
 
     @Transactional
-    public void save(User user) {
+    public void save(UserDto userDto) {
+        User user = new User();
+
+        String firstName = userDto.getFirstName();
+        String lastName = userDto.getLastName();
+        String username = (firstName.charAt(0) + lastName).toLowerCase();
+
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setEnabled(true);
+
+        UserInfo userInfo = new UserInfo();
+        userInfo.setFirstName(firstName);
+        userInfo.setLastName(lastName);
+        userInfo.setEmail(username + "@bth.com");
+        userInfo.setUser(user);
+        user.setUserInfo(userInfo);
+
         userDao.save(user);
     }
 

@@ -13,32 +13,29 @@
 <div th:insert="~{fragments/header :: header}"></div>
 <div class="container">
 <h2>Employee Form</h2>
-<form th:action="@{/employees/save}" th:object="${employee}" method="POST">
-    <input type="hidden" th:field="*{id}">
+<form th:action="@{/users/save}" th:object="${user}" method="POST">
     <div class="mb-3">
         <label for="firstName" class="form-label">First name </label>
         <input type="text" id="firstName" th:field="*{firstName}" placeholder="First name">
         <!-- Show error message -->
         <span th:if="${#fields.hasErrors('firstName')}"
-              th:errors="*{firstName}"></span>
+              th:errors="*{userInfo.firstName}"></span>
     </div>
     <div class="mb-3">
         <label for="lastName" class="form-label">Last name </label>
         <input type="text" id="lastName" th:field="*{lastName}" placeholder="Last name">
         <!-- Show error message -->
         <span th:if="${#fields.hasErrors('lastName')}"
-              th:errors="*{lastName}"></span>
+              th:errors="*{userInfo.lastName}"></span>
     </div>
     <div class="mb-3">
-        <label for="email" class="form-label">Email </label>
-        <input type="email" id="email" th:field="*{email}" placeholder="Email">
+        <label for="password" class="form-label">Password: </label>
+        <input type="password" id="password" th:field="*{password}" placeholder="password">
         <!-- Show error message -->
-        <span th:if="${#fields.hasErrors('email')}"
-              th:errors="*{email}"></span>
-        <!-- Not a pretty solution but works for now as there's only one class level validation -->
-        <span th:if="${#fields.hasErrors('${employee}')}"
-              th:errors="${employee}"></span>
+        <span th:if="${#fields.hasErrors('password')}"
+              th:errors="*{password}"></span>
     </div>
+
     <input type="submit" value="Submit" class="btn btn-primary">
 </form>
 </div>

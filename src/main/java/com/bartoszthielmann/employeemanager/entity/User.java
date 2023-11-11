@@ -75,11 +75,11 @@ public class User {
         this.enabled = enabled;
     }
 
-    public UserInfo getUserDetail() {
+    public UserInfo getUserInfo() {
         return userInfo;
     }
 
-    public void setUserDetail(UserInfo userInfo) {
+    public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
     }
 

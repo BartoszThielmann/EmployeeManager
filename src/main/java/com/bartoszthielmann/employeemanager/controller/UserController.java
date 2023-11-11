@@ -1,6 +1,7 @@
 package com.bartoszthielmann.employeemanager.controller;
 
 import com.bartoszthielmann.employeemanager.entity.User;
+import com.bartoszthielmann.employeemanager.entity.UserDto;
 import com.bartoszthielmann.employeemanager.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -28,34 +29,33 @@ public class UserController {
         return "listUsers";
     }
 
-//    @GetMapping("/delete")
-//    public String deleteEmployee(@RequestParam("id") int id) {
-//        employeeService.deleteById(id);
-//
-//        return "redirect:list";
-//    }
-//
-//    @GetMapping("/create")
-//    public String showAddForm(Model model) {
-//        model.addAttribute("employee", new Employee());
-//
-//        return "employee-form";
-//    }
-//
+    @GetMapping("/delete")
+    public String deleteUser(@RequestParam("id") int id) {
+        userService.deleteById(id);
+
+        return "redirect:list";
+    }
+
+    @GetMapping("/create")
+    public String showAddForm(Model model) {
+        model.addAttribute("user", new UserDto());
+        return "userForm";
+    }
+
 //    @GetMapping("/update")
 //    public String showUpdateForm(@RequestParam("id") int id, Model model) {
-//        Employee employee = employeeService.findById(id);
-//        model.addAttribute("employee", employee);
+//        User user = userService.findById(id);
+//        model.addAttribute("user", user);
 //
-//        return "employee-form";
+//        return "userForm";
 //    }
-//
-//    @PostMapping("/save")
-//    public String saveEmployee(@Valid @ModelAttribute Employee employee, BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//            return "employee-form";
-//        }
-//        employeeService.save(employee);
-//        return "redirect:list";
-//    }
+
+    @PostMapping("/save")
+    public String saveEmployee(@Valid @ModelAttribute UserDto user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "userForm";
+        }
+        userService.save(user);
+        return "redirect:list";
+    }
 }

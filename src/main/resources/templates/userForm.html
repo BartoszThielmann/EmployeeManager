@@ -19,14 +19,14 @@
         <input type="text" id="firstName" th:field="*{firstName}" placeholder="First name">
         <!-- Show error message -->
         <span th:if="${#fields.hasErrors('firstName')}"
-              th:errors="*{userInfo.firstName}"></span>
+              th:errors="*{firstName}"></span>
     </div>
     <div class="mb-3">
         <label for="lastName" class="form-label">Last name </label>
         <input type="text" id="lastName" th:field="*{lastName}" placeholder="Last name">
         <!-- Show error message -->
         <span th:if="${#fields.hasErrors('lastName')}"
-              th:errors="*{userInfo.lastName}"></span>
+              th:errors="*{lastName}"></span>
     </div>
     <div class="mb-3">
         <label for="password" class="form-label">Password: </label>

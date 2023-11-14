@@ -1,10 +1,14 @@
 package com.bartoszthielmann.employeemanager.entity;
 
+import com.bartoszthielmann.employeemanager.service.UserInfoService;
 import com.bartoszthielmann.employeemanager.validation.Unique;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "user_detail")
+@Unique(message = "Email already exists", service = UserInfoService.class, fieldName = "email", primaryKeyName = "id")
 public class UserInfo {
 
     @Id
@@ -19,6 +23,8 @@ public class UserInfo {
     private String lastName;
 
     @Column(name = "email")
+    @Email
+    @Pattern(regexp=".*@bth\\.com$", message = "Email must be in domain @bth.com")
     private String email;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})

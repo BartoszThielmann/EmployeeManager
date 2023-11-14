@@ -3,13 +3,16 @@ package com.bartoszthielmann.employeemanager.entity;
 import com.bartoszthielmann.employeemanager.service.UserService;
 import com.bartoszthielmann.employeemanager.validation.Unique;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "user")
-@Unique(service = UserService.class, fieldName = "username", primaryKeyName = "id")
+@Unique(message = "Username must be unique", service = UserService.class, fieldName = "username", primaryKeyName = "id")
 public class User {
 
     @Id
@@ -18,9 +21,13 @@ public class User {
     private int id;
 
     @Column(name = "username")
+    @NotNull
+    @NotEmpty
     private String username;
 
     @Column(name = "password")
+    @NotNull
+    @NotEmpty
     private String password;
 
     @Column(name = "enabled")
@@ -33,9 +40,7 @@ public class User {
                 fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name ="role_id"))
-
     private Set<Role> roles;
-
 
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservations;
@@ -89,5 +94,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

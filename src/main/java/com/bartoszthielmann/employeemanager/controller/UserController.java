@@ -51,7 +51,7 @@ public class UserController {
 //    }
 
     @PostMapping("/save")
-    public String saveEmployee(@Valid @ModelAttribute UserDto user, BindingResult bindingResult) {
+    public String saveEmployee(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "userForm";
         }

@@ -35,6 +35,14 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public List<String> findUsernamesByPrefix(String prefix) {
+        String queryString =
+                "SELECT u.username FROM User u WHERE u.username LIKE '" + prefix + "%' ORDER BY u.username";
+        TypedQuery<String> query = entityManager.createQuery(queryString, String.class);
+        return query.getResultList();
+    }
+
+    @Override
     public void deleteById(int id) {
         User user = entityManager.find(User.class, id);
         if (user != null) {

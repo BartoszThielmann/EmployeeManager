@@ -2,6 +2,7 @@ package com.bartoszthielmann.employeemanager.entity;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class UserDto {
 
@@ -15,6 +16,7 @@ public class UserDto {
 
     @NotNull
     @NotEmpty
+    @Size(min = 8, max = 16, message = "Password length must be 8-16")
     private String password;
 
     public String getFirstName() {

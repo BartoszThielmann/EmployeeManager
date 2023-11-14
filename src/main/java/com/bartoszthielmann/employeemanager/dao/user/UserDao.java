@@ -13,6 +13,8 @@ public interface UserDao {
 
     public User findByUsername(String username);
 
+    public List<String> findUsernamesByPrefix(String prefix);
+
     public void deleteById(int id);
 
     public void save(User user);

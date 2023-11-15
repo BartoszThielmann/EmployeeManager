@@ -27,7 +27,7 @@ public class UserInfo {
     @Pattern(regexp=".*@bth\\.com$", message = "Email must be in domain @bth.com")
     private String email;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

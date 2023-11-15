@@ -42,13 +42,13 @@ public class UserController {
         return "userForm";
     }
 
-//    @GetMapping("/update")
-//    public String showUpdateForm(@RequestParam("id") int id, Model model) {
-//        User user = userService.findById(id);
-//        model.addAttribute("user", user);
-//
-//        return "userForm";
-//    }
+    @GetMapping("/update")
+    public String showUpdateForm(@RequestParam("id") int id, Model model) {
+        UserDto userDto = userService.createUserDtoFromUser(userService.findById(id));
+        model.addAttribute("user", userDto);
+
+        return "userForm";
+    }
 
     @PostMapping("/save")
     public String saveEmployee(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult) {

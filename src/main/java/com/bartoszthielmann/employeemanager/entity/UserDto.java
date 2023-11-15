@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Size;
 public class UserDto {
 
     @NotNull
+    private int id;
+
+    @NotNull
     @NotEmpty
     private String firstName;
 
@@ -18,6 +21,14 @@ public class UserDto {
     @NotEmpty
     @Size(min = 8, max = 16, message = "Password length must be 8-16")
     private String password;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;

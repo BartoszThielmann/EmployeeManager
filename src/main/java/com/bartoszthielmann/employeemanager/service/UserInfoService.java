@@ -2,6 +2,7 @@ package com.bartoszthielmann.employeemanager.service;
 
 
 import com.bartoszthielmann.employeemanager.dao.user.UserInfoDao;
+import com.bartoszthielmann.employeemanager.entity.UserInfo;
 import org.springframework.stereotype.Service;
 
 
@@ -12,6 +13,10 @@ public class UserInfoService implements FieldValueExists {
 
     public UserInfoService(UserInfoDao userInfoDao) {
         this.userInfoDao = userInfoDao;
+    }
+
+    public UserInfo findByUserId(int id) {
+        return userInfoDao.findByUserId(id);
     }
 
     @Override

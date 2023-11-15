@@ -7,6 +7,8 @@ import com.bartoszthielmann.employeemanager.entity.UserInfo;
 import jakarta.validation.ConstraintViolation;
 import org.hibernate.exception.ConstraintViolationException;
 import jakarta.validation.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +51,15 @@ public class UserService implements FieldValueExists {
         return userDao.findUsernamesByPrefix(prefix);
     }
 
+    public UserDto createUserDtoFromUser(User user) {
+        UserDto userDto = new UserDto();
+        UserInfo userInfo = user.getUserInfo();
+        userDto.setId(user.getId());
+        userDto.setFirstName(userInfo.getFirstName());
+        userDto.setLastName(userInfo.getLastName());
+        return userDto;
+    }
+
     @Transactional
     public void deleteById(int id) {
         userDao.deleteById(id);
@@ -57,20 +68,25 @@ public class UserService implements FieldValueExists {
     @Transactional
     public void save(UserDto userDto) {
         User user = new User();
-
         String firstName = userDto.getFirstName();
         String lastName = userDto.getLastName();
         String username = generateStandardUsername(firstName, lastName);
 
+        user.setId(userDto.getId());
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setEnabled(true);
 
-        UserInfo userInfo = new UserInfo();
+        UserInfo userInfo;
+        if (userDto.getId() != 0) {
+            userInfo = userInfoService.findByUserId(userDto.getId());
+        } else {
+            userInfo = new UserInfo();
+        }
+
         userInfo.setFirstName(firstName);
         userInfo.setLastName(lastName);
         userInfo.setEmail(username + "@bth.com");
-        userInfo.setUser(user);
         user.setUserInfo(userInfo);
 
         Set<ConstraintViolation<User>> userViolations = validator.validate(user);

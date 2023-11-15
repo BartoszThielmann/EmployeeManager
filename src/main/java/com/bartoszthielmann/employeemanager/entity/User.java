@@ -86,6 +86,9 @@ public class User {
 
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
+        if (userInfo != null) {
+            userInfo.setUser(this);
+        }
     }
 
     public Set<Role> getRoles() {

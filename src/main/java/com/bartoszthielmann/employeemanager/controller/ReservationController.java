@@ -4,10 +4,12 @@ import com.bartoszthielmann.employeemanager.entity.Reservation;
 import com.bartoszthielmann.employeemanager.entity.ReservationForm;
 import com.bartoszthielmann.employeemanager.entity.User;
 import com.bartoszthielmann.employeemanager.entity.Workspace;
+import com.bartoszthielmann.employeemanager.security.CustomUserDetails;
 import com.bartoszthielmann.employeemanager.service.UserService;
 import com.bartoszthielmann.employeemanager.service.ReservationService;
 import com.bartoszthielmann.employeemanager.service.WorkspaceService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,18 +47,20 @@ public class ReservationController {
         ReservationForm reservationForm = new ReservationForm();
         reservationForm.setOfficeId(id);
         model.addAttribute("workspaces", workspaces);
-        model.addAttribute("employees", users);
         model.addAttribute("reservationForm", reservationForm);
 
         return "reservation-form";
     }
 
     @PostMapping("/save")
-    public String saveReservation(@Valid @ModelAttribute ReservationForm reservationForm, BindingResult bindingResult) {
+    public String saveReservation(@Valid @ModelAttribute ReservationForm reservationForm, BindingResult bindingResult,
+                                  Authentication authentication) {
         if (bindingResult.hasErrors()) {
             int officeId = reservationForm.getOfficeId();
             return "redirect:create?id=" + officeId + "&Error";
         }
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        reservationForm.setUserId(userDetails.getId());
         reservationService.createReservationFromForm(reservationForm);
         return "redirect:list";
     }

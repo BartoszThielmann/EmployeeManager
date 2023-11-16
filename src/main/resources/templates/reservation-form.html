@@ -17,13 +17,6 @@
             Form has some errors. Please verify input and try again.
         </div>
         <div class="mb-3">
-            <label for="employees">Employee: </label>
-            <select th:object="${employees}" th:field="${reservationForm.employeeId}" id="employees">
-                <option th:each="employee : ${employees}" th:value="${employee.id}" th:text="${employee.firstName} + ' ' + ${employee.lastName}"></option>
-            </select>
-        </div>
-
-        <div class="mb-3">
             <label for="workspaces">Workspace: </label>
             <select th:object="${workspaces}" th:field="${reservationForm.workspaceId}" id="workspaces">
                 <option th:each="workspace : ${workspaces}" th:value="${workspace.id}" th:text="${workspace.name}"></option>

@@ -10,12 +10,14 @@ import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
+    private Integer id;
     private String username;
     private String password;
     private boolean enabled;
     private Collection<? extends GrantedAuthority> authorities;
 
     public CustomUserDetails (User user) {
+        this.id = user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.enabled = user.isEnabled();
@@ -26,6 +28,10 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     @Override

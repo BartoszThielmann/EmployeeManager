@@ -19,7 +19,7 @@
       <th>Workspace</th>
       <th>Start</th>
       <th>End</th>
-      <th>Employee</th>
+      <th>User</th>
       <th sec:authorize="hasRole('ROLE_ADMIN')">Actions</th>
     </tr>
     </thead>
@@ -29,7 +29,7 @@
       + ${reservation.workspace.office.city}" />
       <td th:text="${reservation.start}" />
       <td th:text="${reservation.end}" />
-      <td th:text="${reservation.employee.email}" />
+      <td th:text="${reservation.user.userInfo.email}" />
       <td sec:authorize="hasRole('ROLE_ADMIN')">
         <a th:href="@{/reservations/delete(id=${reservation.id})}" class="btn btn-danger">Delete</a>
       </td>

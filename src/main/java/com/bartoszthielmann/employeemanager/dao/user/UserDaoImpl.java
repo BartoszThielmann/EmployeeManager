@@ -1,5 +1,6 @@
 package com.bartoszthielmann.employeemanager.dao.user;
 
+import com.bartoszthielmann.employeemanager.entity.Role;
 import com.bartoszthielmann.employeemanager.entity.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -39,6 +40,17 @@ public class UserDaoImpl implements UserDao {
         String queryString =
                 "SELECT u.username FROM User u WHERE u.username LIKE '" + prefix + "%' ORDER BY u.username";
         TypedQuery<String> query = entityManager.createQuery(queryString, String.class);
+        return query.getResultList();
+    }
+
+    public List<Role> findAllRoles() {
+        TypedQuery<Role> query = entityManager.createQuery("FROM Role", Role.class);
+        return query.getResultList();
+    }
+
+    public List<Role> findRolesByIds(List<Integer> idList) {
+        TypedQuery<Role> query = entityManager.createQuery("FROM Role WHERE id IN :idList", Role.class);
+        query.setParameter("idList", idList);
         return query.getResultList();
     }
 

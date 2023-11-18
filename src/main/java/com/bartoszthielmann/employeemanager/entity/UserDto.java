@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 public class UserDto {
 
     @NotNull
@@ -16,6 +18,8 @@ public class UserDto {
     @NotNull
     @NotEmpty
     private String lastName;
+
+    private List<String> roles;
 
     @NotNull
     @NotEmpty
@@ -44,6 +48,14 @@ public class UserDto {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 
     public String getPassword() {

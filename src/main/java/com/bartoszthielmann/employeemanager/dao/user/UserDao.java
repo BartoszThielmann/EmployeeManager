@@ -1,5 +1,6 @@
 package com.bartoszthielmann.employeemanager.dao.user;
 
+import com.bartoszthielmann.employeemanager.entity.Role;
 import com.bartoszthielmann.employeemanager.entity.User;
 
 import java.util.List;
@@ -14,6 +15,10 @@ public interface UserDao {
     public User findByUsername(String username);
 
     public List<String> findUsernamesByPrefix(String prefix);
+
+    public List<Role> findAllRoles();
+
+    public List<Role> findRolesByIds(List<Integer> idList);
 
     public void deleteById(int id);
 

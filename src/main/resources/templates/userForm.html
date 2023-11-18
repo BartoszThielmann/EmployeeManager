@@ -30,6 +30,16 @@
               th:errors="*{lastName}"></span>
     </div>
     <div class="mb-3">
+        Roles:
+        <li th:each="item, stat : ${roles}">
+            <input th:if="${user.roles != null}" type="checkbox" th:name="'roles[' + ${stat.index} + ']'" th:value="${item.id}"
+                   th:text="${item.name}" th:checked="${#lists.contains(user.roles, ''+item.id)}"/>
+            <input th:if="${user.roles == null}" type="checkbox" th:name="'roles[' + ${stat.index} + ']'" th:value="${item.id}"
+                   th:text="${item.name}"/>
+        </li>
+    </div>
+
+    <div class="mb-3">
         <label for="password" class="form-label">Password: </label>
         <input type="password" id="password" th:field="*{password}" placeholder="password">
         <!-- Show error message -->

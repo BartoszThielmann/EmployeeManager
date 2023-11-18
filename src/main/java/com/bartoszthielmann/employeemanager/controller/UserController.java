@@ -1,5 +1,6 @@
 package com.bartoszthielmann.employeemanager.controller;
 
+import com.bartoszthielmann.employeemanager.entity.Role;
 import com.bartoszthielmann.employeemanager.entity.User;
 import com.bartoszthielmann.employeemanager.entity.UserDto;
 import com.bartoszthielmann.employeemanager.service.UserService;
@@ -38,21 +39,26 @@ public class UserController {
 
     @GetMapping("/create")
     public String showAddForm(Model model) {
+        List<Role> roles = userService.findAllRoles();
         model.addAttribute("user", new UserDto());
+        model.addAttribute("roles", roles);
         return "userForm";
     }
 
     @GetMapping("/update")
     public String showUpdateForm(@RequestParam("id") int id, Model model) {
         UserDto userDto = userService.createUserDtoFromUser(userService.findById(id));
+        List<Role> roles = userService.findAllRoles();
         model.addAttribute("user", userDto);
-
+        model.addAttribute("roles", roles);
         return "userForm";
     }
 
     @PostMapping("/save")
-    public String saveEmployee(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult) {
+    public String saveEmployee(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            List<Role> roles = userService.findAllRoles();
+            model.addAttribute("roles", roles);
             return "userForm";
         }
         userService.save(user);

@@ -1,14 +1,13 @@
 package com.bartoszthielmann.employeemanager.service;
 
 import com.bartoszthielmann.employeemanager.dao.user.UserDao;
+import com.bartoszthielmann.employeemanager.entity.Role;
 import com.bartoszthielmann.employeemanager.entity.User;
 import com.bartoszthielmann.employeemanager.entity.UserDto;
 import com.bartoszthielmann.employeemanager.entity.UserInfo;
 import jakarta.validation.ConstraintViolation;
 import org.hibernate.exception.ConstraintViolationException;
 import jakarta.validation.Validator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -51,12 +51,25 @@ public class UserService implements FieldValueExists {
         return userDao.findUsernamesByPrefix(prefix);
     }
 
+    public List<Role> findAllRoles() {
+        return userDao.findAllRoles();
+    }
+
+    public List<Role> findRolesByIds(List<Integer> idList) {
+        return userDao.findRolesByIds(idList);
+    }
+
     public UserDto createUserDtoFromUser(User user) {
         UserDto userDto = new UserDto();
         UserInfo userInfo = user.getUserInfo();
         userDto.setId(user.getId());
         userDto.setFirstName(userInfo.getFirstName());
         userDto.setLastName(userInfo.getLastName());
+        List<String> rolesList = new ArrayList<>();
+        for (Role role : user.getRoles()) {
+            rolesList.add(String.valueOf(role.getId()));
+        }
+        userDto.setRoles(rolesList);
         return userDto;
     }
 
@@ -76,6 +89,19 @@ public class UserService implements FieldValueExists {
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setEnabled(true);
+
+        List<Integer> rolesIds = new ArrayList<>();
+        for (String str : userDto.getRoles()) {
+            try {
+                rolesIds.add(Integer.parseInt(str));
+            } catch (NumberFormatException e) {
+                // No need to do anything for now
+            }
+        }
+        if (!rolesIds.isEmpty()) {
+            Set<Role> roles = new HashSet<Role>(findRolesByIds(rolesIds));
+            user.setRoles(roles);
+        }
 
         UserInfo userInfo;
         if (userDto.getId() != 0) {

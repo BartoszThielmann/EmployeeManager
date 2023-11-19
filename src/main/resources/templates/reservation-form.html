@@ -12,13 +12,16 @@
 <body>
     <div th:insert="~{fragments/header :: header}"></div>
     <div class="container text-center mt-3">
-    <form th:action="@{/reservations/save}" th:object="${reservationForm}" method="POST">
+    <form th:action="@{/reservations/save}" th:object="${reservationDto}" method="POST">
         <div th:if="${param.Error != null}" class="alert alert-danger">
             Form has some errors. Please verify input and try again.
         </div>
+        <div th:if="${param.NotAvailable != null}" class="alert alert-danger">
+            Selected workspace is not available at that time.
+        </div>
         <div class="mb-3">
             <label for="workspaces">Workspace: </label>
-            <select th:object="${workspaces}" th:field="${reservationForm.workspaceId}" id="workspaces">
+            <select th:object="${workspaces}" th:field="${reservationDto.workspaceId}" id="workspaces">
                 <option th:each="workspace : ${workspaces}" th:value="${workspace.id}" th:text="${workspace.name}"></option>
             </select>
         </div>

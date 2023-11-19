@@ -1,9 +1,10 @@
 package com.bartoszthielmann.employeemanager.controller;
 
 import com.bartoszthielmann.employeemanager.entity.Reservation;
-import com.bartoszthielmann.employeemanager.entity.ReservationForm;
+import com.bartoszthielmann.employeemanager.entity.ReservationDto;
 import com.bartoszthielmann.employeemanager.entity.User;
 import com.bartoszthielmann.employeemanager.entity.Workspace;
+import com.bartoszthielmann.employeemanager.exception.WorkspaceNotAvailableException;
 import com.bartoszthielmann.employeemanager.security.CustomUserDetails;
 import com.bartoszthielmann.employeemanager.service.UserService;
 import com.bartoszthielmann.employeemanager.service.ReservationService;
@@ -44,24 +45,30 @@ public class ReservationController {
     public String showAddForm(Model model, @RequestParam(name = "id") int id) {
         List<User> users = userService.findAll();
         List<Workspace> workspaces = workspaceService.findWorkspacesByOfficeId(id);
-        ReservationForm reservationForm = new ReservationForm();
-        reservationForm.setOfficeId(id);
+        ReservationDto reservationDto = new ReservationDto();
+        reservationDto.setOfficeId(id);
         model.addAttribute("workspaces", workspaces);
-        model.addAttribute("reservationForm", reservationForm);
+        model.addAttribute("reservationDto", reservationDto);
 
         return "reservation-form";
     }
 
     @PostMapping("/save")
-    public String saveReservation(@Valid @ModelAttribute ReservationForm reservationForm, BindingResult bindingResult,
+    public String saveReservation(@Valid @ModelAttribute ReservationDto reservationDto, BindingResult bindingResult,
                                   Authentication authentication) {
         if (bindingResult.hasErrors()) {
-            int officeId = reservationForm.getOfficeId();
+            int officeId = reservationDto.getOfficeId();
             return "redirect:create?id=" + officeId + "&Error";
         }
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        reservationForm.setUserId(userDetails.getId());
-        reservationService.createReservationFromForm(reservationForm);
+        reservationDto.setUserId(userDetails.getId());
+        try {
+            reservationService.createReservationFromForm(reservationDto);
+        } catch (WorkspaceNotAvailableException e) {
+            int officeId = reservationDto.getOfficeId();
+            return "redirect:create?id=" + officeId + "&NotAvailable";
+        }
+
         return "redirect:list";
     }
 

@@ -7,13 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.sql.Date;
 
 @DateRange(startField = "start", endField = "end")
-public class ReservationForm {
-    /**
-     * Object used to gather user input in reservation-form.
-     * Since user input is sent from form to server in the form of strings it is necessary to then convert that
-     * information into actual Reservation object based on the fields.
-     * This is sort of a DTO object.
-    */
+public class ReservationDto {
 
     @Future private Date start;
 
@@ -25,7 +19,7 @@ public class ReservationForm {
 
     private int officeId;
 
-    public ReservationForm() {
+    public ReservationDto() {
     }
 
     public Date getStart() {

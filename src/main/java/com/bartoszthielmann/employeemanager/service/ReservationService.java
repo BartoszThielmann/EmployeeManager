@@ -4,10 +4,12 @@ import com.bartoszthielmann.employeemanager.dao.user.UserDao;
 import com.bartoszthielmann.employeemanager.dao.reservation.ReservationDao;
 import com.bartoszthielmann.employeemanager.dao.workspace.WorkspaceDao;
 import com.bartoszthielmann.employeemanager.entity.Reservation;
-import com.bartoszthielmann.employeemanager.entity.ReservationForm;
+import com.bartoszthielmann.employeemanager.entity.ReservationDto;
+import com.bartoszthielmann.employeemanager.exception.WorkspaceNotAvailableException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -33,12 +35,20 @@ public class ReservationService {
     }
 
     @Transactional
-    public void createReservationFromForm(ReservationForm reservationForm) {
+    public void createReservationFromForm(ReservationDto reservationDto) {
+        Date start = reservationDto.getStart();
+        Date end = reservationDto.getEnd();
+        Integer workspaceId = reservationDto.getWorkspaceId();
+        List<Reservation> existingReservations = reservationDao
+                .findWorkspaceReservationsBetweenDates(workspaceId, start, end);
+        if (!existingReservations.isEmpty()) {
+            throw new WorkspaceNotAvailableException();
+        }
         Reservation reservation = new Reservation();
-        reservation.setUser(userDao.findById(reservationForm.getUserId()));
-        reservation.setWorkspace(workspaceDao.findById(reservationForm.getWorkspaceId()));
-        reservation.setStart(reservationForm.getStart());
-        reservation.setEnd(reservationForm.getEnd());
+        reservation.setUser(userDao.findById(reservationDto.getUserId()));
+        reservation.setWorkspace(workspaceDao.findById(workspaceId));
+        reservation.setStart(start);
+        reservation.setEnd(end);
         reservationDao.save(reservation);
     }
 

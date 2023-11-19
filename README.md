@@ -1,6 +1,9 @@
 # Employee Manager
-![Screenshot from 2023-10-22 16-12-05](https://github.com/BartoszThielmann/EmployeeManager/assets/111487260/35e95131-d3ea-464a-8238-b7c7d0404114)
-Work in progress. Spring Boot demo application for managing employees. 
+![demo](https://github.com/BartoszThielmann/EmployeeManager/assets/111487260/cdc3a0df-c007-47ba-b323-05dd1aed1b6d)
+Work in progress. Spring Boot demo application for managing employees. Currently the main functionality is to allow
+users to reserve workspaces in an office.
+
+
 The goal is to include/use:
 - Spring Boot
 - Spring MVC

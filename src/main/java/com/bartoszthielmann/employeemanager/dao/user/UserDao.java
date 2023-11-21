@@ -22,7 +22,7 @@ public interface UserDao {
 
     public void deleteById(int id);
 
-    public void save(User user);
+    public User save(User user);
 
     public boolean exists(String fieldName, String value, Integer ignoredId);
 }

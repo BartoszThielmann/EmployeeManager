@@ -79,7 +79,7 @@ public class UserService implements FieldValueExists {
     }
 
     @Transactional
-    public void save(UserDto userDto) {
+    public User save(UserDto userDto) {
         User user = new User();
         String firstName = userDto.getFirstName();
         String lastName = userDto.getLastName();
@@ -129,7 +129,7 @@ public class UserService implements FieldValueExists {
             throw new ConstraintViolationException("Violated constraints of UserInfo",
                     new SQLException(userInfoViolation.getMessage()), "UserInfoConstraint");
         }
-        userDao.save(user);
+        return userDao.save(user);
     }
 
     @Override

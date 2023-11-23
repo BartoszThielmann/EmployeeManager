@@ -30,12 +30,12 @@ public class ReservationService {
     }
 
     @Transactional
-    public void save(Reservation reservation) {
-        reservationDao.save(reservation);
+    public Reservation save(Reservation reservation) {
+        return reservationDao.save(reservation);
     }
 
     @Transactional
-    public void createReservationFromForm(ReservationDto reservationDto) {
+    public Reservation createReservationFromDto(ReservationDto reservationDto) {
         Date start = reservationDto.getStart();
         Date end = reservationDto.getEnd();
         Integer workspaceId = reservationDto.getWorkspaceId();
@@ -49,7 +49,7 @@ public class ReservationService {
         reservation.setWorkspace(workspaceDao.findById(workspaceId));
         reservation.setStart(start);
         reservation.setEnd(end);
-        reservationDao.save(reservation);
+        return reservation;
     }
 
     @Transactional

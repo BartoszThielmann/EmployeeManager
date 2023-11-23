@@ -62,12 +62,14 @@ public class ReservationController {
         }
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         reservationDto.setUserId(userDetails.getId());
+        Reservation reservation;
         try {
-            reservationService.createReservationFromForm(reservationDto);
+            reservation = reservationService.createReservationFromDto(reservationDto);
         } catch (WorkspaceNotAvailableException e) {
             int officeId = reservationDto.getOfficeId();
             return "redirect:create?id=" + officeId + "&NotAvailable";
         }
+        reservationService.save(reservation);
 
         return "redirect:list";
     }

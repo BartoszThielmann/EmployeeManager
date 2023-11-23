@@ -51,7 +51,7 @@ public class ReservationDaoImpl implements ReservationDao {
     }
 
     @Override
-    public void save(Reservation reservation) {
-        entityManager.merge(reservation);
+    public Reservation save(Reservation reservation) {
+        return entityManager.merge(reservation);
     }
 }

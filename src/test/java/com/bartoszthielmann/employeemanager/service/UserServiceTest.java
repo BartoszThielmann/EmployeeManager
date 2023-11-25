@@ -1,4 +1,4 @@
-package com.bartoszthielmann.employeemanager.service.user;
+package com.bartoszthielmann.employeemanager.service;
 
 
 import com.bartoszthielmann.employeemanager.dao.user.UserDao;
@@ -6,7 +6,6 @@ import com.bartoszthielmann.employeemanager.entity.Role;
 import com.bartoszthielmann.employeemanager.entity.User;
 import com.bartoszthielmann.employeemanager.entity.UserDto;
 import com.bartoszthielmann.employeemanager.entity.UserInfo;
-import com.bartoszthielmann.employeemanager.service.UserService;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +41,6 @@ public class UserServiceTest {
     private UserDto userDto;
     private String baseUsername;
     private List<Role> roleList;
-
 
     @BeforeEach
     public void setup() {

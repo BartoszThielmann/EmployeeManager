@@ -11,44 +11,57 @@
 </head>
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
-<div class="container">
-<h2>Employee Form</h2>
-<form th:action="@{/users/save}" th:object="${user}" method="POST">
-    <input type="hidden" th:field="*{id}">
-    <div class="mb-3">
-        <label for="firstName" class="form-label">First name </label>
-        <input type="text" id="firstName" th:field="*{firstName}" placeholder="First name">
-        <!-- Show error message -->
-        <span th:if="${#fields.hasErrors('firstName')}"
-              th:errors="*{firstName}"></span>
-    </div>
-    <div class="mb-3">
-        <label for="lastName" class="form-label">Last name </label>
-        <input type="text" id="lastName" th:field="*{lastName}" placeholder="Last name">
-        <!-- Show error message -->
-        <span th:if="${#fields.hasErrors('lastName')}"
-              th:errors="*{lastName}"></span>
-    </div>
-    <div class="mb-3">
-        Roles:
-        <li th:each="item, stat : ${roles}">
-            <input th:if="${user.roles != null}" type="checkbox" th:name="'roles[' + ${stat.index} + ']'" th:value="${item.id}"
-                   th:text="${item.name}" th:checked="${#lists.contains(user.roles, ''+item.id)}"/>
-            <input th:if="${user.roles == null}" type="checkbox" th:name="'roles[' + ${stat.index} + ']'" th:value="${item.id}"
-                   th:text="${item.name}"/>
-        </li>
-    </div>
 
-    <div class="mb-3">
-        <label for="password" class="form-label">Password: </label>
-        <input type="password" id="password" th:field="*{password}" placeholder="password">
-        <!-- Show error message -->
-        <span th:if="${#fields.hasErrors('password')}"
-              th:errors="*{password}"></span>
-    </div>
+<div class="d-flex justify-content-center">
+    <h2>User Form</h2>
+</div>
+<div class="d-flex justify-content-center">
+    <p>Please fill in the form to create/modify an account</p>
+</div>
 
-    <input type="submit" value="Submit" class="btn btn-primary">
-</form>
+<div class="d-flex justify-content-center">
+    <div class="border rounded container-sm justify-content-center mb-3 col-md-4 p-3">
+        <form th:action="@{/users/save}" th:object="${user}" method="POST">
+            <input type="hidden" th:field="*{id}">
+            <div class="mb-3">
+                <label for="firstName" class="form-label">First name </label>
+                <input type="text" class="form-control" id="firstName" th:field="*{firstName}" placeholder="First name">
+                <!-- Show error message -->
+                <span class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+            </div>
+            <div class="mb-3">
+                <label for="lastName" class="form-label">Last name </label>
+                <input type="text" class="form-control" id="lastName" th:field="*{lastName}" placeholder="Last name">
+                <!-- Show error message -->
+                <span class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+            </div>
+            <div class="form-check mb-3">
+                <label class="form-label">Roles: </label>
+                <table>
+                    <tr th:each="item, stat : ${roles}">
+                        <td>
+                            <input th:if="${user.roles != null}" type="checkbox" class="form-check-input" th:name="'roles[' + ${stat.index} + ']'"
+                                   th:value="${item.id}" th:text="${item.name}" th:checked="${#lists.contains(user.roles, ''+item.id)}"/>
+                        </td>
+                        <td>
+                            <input th:if="${user.roles == null}" type="checkbox" class="form-check-input" th:name="'roles[' + ${stat.index} + ']'"
+                                   th:value="${item.id}" th:text="${item.name}"/>
+                        </td>
+                    <tr>
+                </table>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password: </label>
+                <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Password">
+                <!-- Show error message -->
+                <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+            </div>
+            <div class="d-flex justify-content-center">
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 </html>

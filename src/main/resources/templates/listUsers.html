@@ -12,30 +12,30 @@
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
 <div class="container">
-    <h2>Currently registered users</h2>
-    <table class="table table-bordered">
-        <thead>
-            <tr class="table-primary">
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Email</th>
-            <th sec:authorize="hasRole('ROLE_ADMIN')">Actions</th>
+    <h2>Registered users</h2>
+    <table class="table table-bordered table-responsive">
+        <thead class="table-primary">
+            <tr>
+                <th scope="col" class="col-3">First name</th>
+                <th scope="col" class="col-3">Last name</th>
+                <th scope="col" class="col-3">Email</th>
+                <th scope="col" class="col-2" sec:authorize="hasRole('ROLE_ADMIN')">Actions</th>
             </tr>
         </thead>
         <tbody>
-        <tr th:each="user : ${users}">
-            <td th:text="${user.getUserInfo().getFirstName()}" />
-            <td th:text="${user.getUserInfo().getLastName()}" />
-            <td th:text="${user.getUserInfo().getEmail()}" />
-            <td sec:authorize="hasRole('ROLE_ADMIN')">
-                <a th:href="@{/users/delete(id=${user.id})}" class="btn btn-danger">Delete</a>
-                <a th:href="@{/users/update(id=${user.id})}" class="btn btn-primary">Edit</a>
-            </td>
-        </tr>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.getUserInfo().getFirstName()}" />
+                <td th:text="${user.getUserInfo().getLastName()}" />
+                <td th:text="${user.getUserInfo().getEmail()}" />
+                <td sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/users/update(id=${user.id})}" class="btn btn-primary">Edit</a>
+                    <a th:href="@{/users/delete(id=${user.id})}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
         </tbody>
     </table>
     <div sec:authorize="hasRole('ROLE_ADMIN')">
-    <a th:href="@{/users/create}" class="btn btn-primary" >Add new user</a>
+        <a th:href="@{/users/create}" class="btn btn-primary">Add new user</a>
     </div>
 </div>
 </body>

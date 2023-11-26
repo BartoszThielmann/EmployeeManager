@@ -10,21 +10,49 @@
 
 </head>
 <body>
-<div class="container-fluid p-5 bg-primary text-center">
-    <h1>Employee Manager log in page</h1>
+<div class="container-fluid p-2 bg-primary text-center">
+    <h2>Employee Manager log in page</h2>
 </div>
-<div class="container text-center">
-    <form th:action="@{/login}" method="post">
-        <div>
-            <label for="username" class="form-label">Username: </label>
-            <input id="username" type="text" name="username" placeholder="Username"/>
-        </div>
-        <div>
-            <label for="password" class="form-label">Password: </label>
-            <input id="password" type="password" name="password" placeholder="Password"/>
-        </div>
-        <input type="submit" class="btn btn-primary btn-lg" value="Log in" />
-    </form>
+<div class="d-flex justify-content-center">
+    <div class="border rounded container-sm justify-content-center mb-3 col-md-4 p-3 m-3">
+        <form th:action="@{/login}" method="post">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username: </label>
+                <input id="username" class="form-control" type="text" name="username" placeholder="Username"/>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password: </label>
+                <input id="password" class="form-control" type="password" name="password" placeholder="Password"/>
+            </div>
+            <div class="d-flex justify-content-center">
+                <input type="submit" class="btn btn-primary btn-lg" value="Log in" />
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <table class="table table-bordered table-sm" style="width: 20%">
+        <tr class="table-primary">
+            <td>username</td>
+            <td>password</td>
+            <td>type</td>
+        </tr>
+        <tr>
+            <td>jsalads</td>
+            <td>password123</td>
+            <td>Admin</td>
+        </tr>
+        <tr>
+            <td>ebradberry</td>
+            <td>password123</td>
+            <td>Employee</td>
+        </tr>
+        <tr>
+            <td>lpaul</td>
+            <td>password123</td>
+            <td>Employee</td>
+        </tr>
+    </table>
 </div>
 </body>
 </html>

@@ -11,34 +11,42 @@
 </head>
 <body>
     <div th:insert="~{fragments/header :: header}"></div>
-    <div class="container text-center mt-3">
-    <form th:action="@{/reservations/save}" th:object="${reservationDto}" method="POST">
-        <div th:if="${param.Error != null}" class="alert alert-danger">
-            Form has some errors. Please verify input and try again.
+    <div class="d-flex justify-content-center mt-2"><h2>Reservation Form</h2></div>
+    <div class="d-flex justify-content-center">
+        <p>Please fill in information below to create a reservation in a selected office</p>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div th:if="${param.Error != null}" class="alert alert-danger d-flex flex-column align-items-center p-3">
+            <p class="mb-2">You have to provide both start and end date. End date has to be later than start date.</p>
+            <p class="m-0">Please verify input and try again.</p>
         </div>
         <div th:if="${param.NotAvailable != null}" class="alert alert-danger">
-            Selected workspace is not available at that time.
+            <p class="m-0">Selected workspace is not available at that time.</p>
         </div>
-        <div class="mb-3">
-            <label for="workspaces">Workspace: </label>
-            <select th:object="${workspaces}" th:field="${reservationDto.workspaceId}" id="workspaces">
-                <option th:each="workspace : ${workspaces}" th:value="${workspace.id}" th:text="${workspace.name}"></option>
-            </select>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="border rounded container-sm justify-content-center mb-3 col-md-2 p-3">
+            <form th:action="@{/reservations/save}" th:object="${reservationDto}" method="POST">
+                <div class="mb-3">
+                    <label for="workspaces" class="form-label">Workspace: </label>
+                    <select th:object="${workspaces}" class="form-select" th:field="${reservationDto.workspaceId}" id="workspaces">
+                        <option th:each="workspace : ${workspaces}" th:value="${workspace.id}" th:text="${workspace.name}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="start" class="form-label">Start date:</label>
+                    <input type="date" class="form-control" id="start" th:field="*{start}" />
+                </div>
+                <div class="mb-3">
+                    <label for="end" class="form-label">End date:</label>
+                    <input type="date" class="form-control" id="end" th:field="*{end}" />
+                </div>
+                <input type="hidden" th:field="*{officeId}" th:value="*{officeId}">
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
         </div>
-
-        <div class="mb-3">
-        <label for="start">Start date:</label>
-        <input type="date" id="start" th:field="*{start}" />
-        </div>
-
-        <div class="mb-3">
-        <label for="end">End date:</label>
-        <input type="date" id="end" th:field="*{end}" />
-        </div>
-
-        <input type="hidden" th:field="*{officeId}" th:value="*{officeId}">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
     </div>
 </body>
 </html>

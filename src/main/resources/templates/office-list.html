@@ -14,25 +14,25 @@
 <div class="container">
     <h2>Available Offices</h2>
     <table class="table table-bordered">
-        <thead>
-        <tr class="table-primary">
-            <th>Street Address</th>
-            <th>City</th>
-            <th>Country</th>
-            <th>Actions</th>
-        </tr>
+        <thead class="table-primary">
+            <tr>
+                <th scope="col" class="col">Street Address</th>
+                <th scope="col" class="col">City</th>
+                <th scope="col" class="col-1">Country</th>
+                <th scope="col" class="col-4">Actions</th>
+            </tr>
         </thead>
         <tbody>
-        <tr th:each="office : ${offices}">
-            <td th:text="${office.streetAddress}" />
-            <td th:text="${office.city}" />
-            <td th:text="${office.country}" />
-            <td>
-                <a th:href="@{/reservations/create(id=${office.id})}" class="btn btn-primary mx-1">Make reservation</a>
+            <tr th:each="office : ${offices}">
+                <td th:text="${office.streetAddress}" />
+                <td th:text="${office.city}" />
+                <td th:text="${office.country}" />
+                <td>
+                    <a th:href="@{/reservations/create(id=${office.id})}" class="btn btn-primary mx-1">Make reservation</a>
                     <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/offices/update(id=${office.id})}" class="btn btn-primary mx-1">Edit</a>
                     <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/offices/delete(id=${office.id})}" class="btn btn-danger mx-1">Delete</a>
-            </td>
-        </tr>
+                </td>
+            </tr>
         </tbody>
     </table>
     <div sec:authorize="hasRole('ROLE_ADMIN')">

@@ -11,54 +11,52 @@
 </head>
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
-<div class="container">
-    <h2>Office Form</h2>
-    <form th:action="@{/offices/save}" th:object="${office}" method="POST">
-        <input type="hidden" th:field="*{id}">
-        <div class="mb-3">
-            <label for="streetAddress">Street address: </label>
-            <input type="text" th:field="*{streetAddress}" id="streetAddress">
-            <ul>
-                <li th:each="err: ${#fields.errors('streetAddress')}" th:text="${err}" style="color:red"></li>
-            </ul>
-        </div>
-
-        <div class="mb-3">
-            <label for="city">City: </label>
-            <input type="text" th:field="*{city}" id="city">
-            <ul>
-                <li th:each="err: ${#fields.errors('city')}" th:text="${err}" style="color:red"></li>
-            </ul>
-        </div>
-
-        <div class="mb-3">
-            <label for="country">Country: </label>
-            <input type="text" th:field="*{country}" id="country">
-            <ul>
-                <li th:each="err: ${#fields.errors('country')}" th:text="${err}" style="color:red"></li>
-            </ul>
-        </div>
-
-        Workspaces:
-        <button type="submit" name="addWorkspace" class="btn btn-secondary">Add row</button>
-        <table>
-            <tr th:each="workspace, stat : *{workspaces}">
-                <td>
-                    <input type="text" th:field="*{workspaces[__${stat.index}__].name}">
-                    <input type="hidden" th:field="*{workspaces[__${stat.index}__].id}">
-                </td>
-                <td>
-                    <button type="submit" name="removeWorkspace" th:value="${stat.index}" class="btn btn-danger">Remove row</button>
-                </td>
-                <td>
-                    <ul>
-                        <li th:each="err: ${#fields.errors('${office.workspaces[__${stat.index}__].name}')}" th:text="${err}" style="color:red"></li>
-                    </ul>
-                </td>
-            </tr>
-        </table>
-        <input type="submit" value="Submit" class="btn btn-primary">
-    </form>
+<div class="d-flex justify-content-center mt-2"><h2>Office Form</h2></div>
+<div class="d-flex justify-content-center">
+    <p>Please fill in information below to create/modify an office</p>
+</div>
+<div class="d-flex justify-content-center">
+    <div class="border rounded container-sm justify-content-center mb-3 col-md-4 p-3">
+        <form th:action="@{/offices/save}" th:object="${office}" method="POST">
+            <input type="hidden" th:field="*{id}">
+            <div class="mb-3">
+                <label for="streetAddress" class="form-label">Street address: </label>
+                <input type="text" class="form-control" th:field="*{streetAddress}" id="streetAddress">
+                <span class="text-danger" th:if="${#fields.hasErrors('streetAddress')}" th:errors="*{streetAddress}"></span>
+            </div>
+            <div class="mb-3">
+                <label for="city" class="form-label">City: </label>
+                <input type="text" class="form-control" th:field="*{city}" id="city">
+                <span class="text-danger" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></span>
+            </div>
+            <div class="mb-3">
+                <label for="country" class="form-label">Country: </label>
+                <input type="text" class="form-control" th:field="*{country}" id="country">
+                <span class="text-danger" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></span>
+            </div>
+            <div class="mb-2 mt-4">
+                <label for="workspacesTable" class="form-label">Workspaces:</label>
+                <button type="submit" name="addWorkspace" class="btn btn-secondary">Add</button>
+            </div>
+            <table class="table" id="workspacesTable">
+                <tr th:each="workspace, stat : *{workspaces}">
+                    <div class="row mb-2">
+                        <div class="col-8">
+                            <input type="text" class="form-control col-8" th:field="*{workspaces[__${stat.index}__].name}">
+                            <input type="hidden" th:field="*{workspaces[__${stat.index}__].id}">
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" name="removeWorkspace" th:value="${stat.index}" class="btn btn-danger">Remove</button>
+                        </div>
+                        <div class="col text-danger" th:if="${#fields.hasErrors('${office.workspaces[__${stat.index}__].name}')}" th:errors="${office.workspaces[__${stat.index}__].name}"></div>
+                    </div>
+                </tr>
+            </table>
+            <div class="d-flex justify-content-center">
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 </html>

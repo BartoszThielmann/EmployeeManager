@@ -90,17 +90,20 @@ public class UserService implements FieldValueExists {
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setEnabled(true);
 
-        List<Integer> rolesIds = new ArrayList<>();
-        for (String str : userDto.getRoles()) {
-            try {
-                rolesIds.add(Integer.parseInt(str));
-            } catch (NumberFormatException e) {
-                // No need to do anything for now
+        List<String> roles = userDto.getRoles();
+        if (roles != null) {
+            List<Integer> rolesIds = new ArrayList<>();
+            for (String str : roles) {
+                try {
+                    rolesIds.add(Integer.parseInt(str));
+                } catch (NumberFormatException e) {
+                    // No need to do anything for now
+                }
             }
-        }
-        if (!rolesIds.isEmpty()) {
-            Set<Role> roles = new HashSet<Role>(findRolesByIds(rolesIds));
-            user.setRoles(roles);
+            if (!rolesIds.isEmpty()) {
+                Set<Role> rolesSet = new HashSet<Role>(findRolesByIds(rolesIds));
+                user.setRoles(rolesSet);
+            }
         }
 
         UserInfo userInfo;

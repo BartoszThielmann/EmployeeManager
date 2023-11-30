@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @Controller
@@ -42,13 +43,29 @@ public class ReservationController {
     }
 
     @GetMapping("/create")
-    public String showAddForm(Model model, @RequestParam(name = "id") int id) {
+    public String showAddForm(Model model, @RequestParam(name = "id") int id,
+                              @RequestParam(name="workspaceId", required = false) Integer workspaceId,
+                              @RequestParam(name="startDate", required = false) Date startDate,
+                              @RequestParam(name="endDate", required = false) Date endDate) {
         List<User> users = userService.findAll();
         List<Workspace> workspaces = workspaceService.findWorkspacesByOfficeId(id);
         ReservationDto reservationDto = new ReservationDto();
         reservationDto.setOfficeId(id);
         model.addAttribute("workspaces", workspaces);
         model.addAttribute("reservationDto", reservationDto);
+
+        if (workspaceId != null && startDate != null && endDate != null) {
+            List<ReservationDto> conflictingReservations = reservationService
+                    .findWorkspaceReservationsBetweenDates(workspaceId, startDate, endDate);
+            model.addAttribute("conflictingReservations", conflictingReservations);
+
+            List<Workspace> freeWorkspaces = workspaceService.findAvailableWorkspacesInOfficeBetweenDates(id, startDate, endDate);
+            model.addAttribute("freeWorkspaces", freeWorkspaces);
+
+            model.addAttribute("selectedWorkspace", workspaceService.findById(workspaceId));
+            model.addAttribute("selectedStart", startDate);
+            model.addAttribute("selectedEnd", endDate);
+        }
 
         return "reservation-form";
     }
@@ -67,7 +84,10 @@ public class ReservationController {
             reservation = reservationService.createReservationFromDto(reservationDto);
         } catch (WorkspaceNotAvailableException e) {
             int officeId = reservationDto.getOfficeId();
-            return "redirect:create?id=" + officeId + "&NotAvailable";
+            return "redirect:create?id=" + officeId + "&NotAvailable"
+                    + "&workspaceId=" + reservationDto.getWorkspaceId()
+                    + "&startDate=" + reservationDto.getStart()
+                    + "&endDate=" + reservationDto.getEnd();
         }
         reservationService.save(reservation);
 

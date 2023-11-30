@@ -17,11 +17,24 @@
     </div>
     <div class="d-flex justify-content-center">
         <div th:if="${param.Error != null}" class="alert alert-danger d-flex flex-column align-items-center p-3">
-            <p class="mb-2">You have to provide both start and end date. End date has to be later than start date.</p>
+            <p class="mb-2">You have to provide both start and end date. End date has to be later than start date. You can make a reservation starting at earliest the next day.</p>
             <p class="m-0">Please verify input and try again.</p>
         </div>
         <div th:if="${param.NotAvailable != null}" class="alert alert-danger">
-            <p class="m-0">Selected workspace is not available at that time.</p>
+            <p class="m-0" th:text="${selectedWorkspace.name} + ' is not available between selected dates: ' + ${selectedStart} + ' and ' + ${selectedEnd}"></p>
+            <p>Reservation(s) already exist for this workspace between:</p>
+            <ul id="conflictsList">
+                <li th:each="reservation : ${conflictingReservations}" th:text="${reservation.start} + ' to ' + ${reservation.end}"></li>
+            </ul>
+            <div th:if="${#lists.isEmpty(freeWorkspaces)}">
+                <p>There are no available workspaces between selected dates in this office</p>
+            </div>
+            <div th:if="${not #lists.isEmpty(freeWorkspaces)}">
+                <p>Free workspaces in that time range are:</p>
+                <ul>
+                    <li th:each="workspace : ${freeWorkspaces}" th:text="${workspace.name}"></li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="d-flex justify-content-center">

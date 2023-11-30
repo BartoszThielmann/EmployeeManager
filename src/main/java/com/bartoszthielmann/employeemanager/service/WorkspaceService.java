@@ -5,6 +5,7 @@ import com.bartoszthielmann.employeemanager.entity.Workspace;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -16,6 +17,13 @@ public class WorkspaceService {
         this.workspaceDao = workspaceDao;
     }
 
+    public Workspace findById(Integer id) {
+        return workspaceDao.findById(id);
+    }
+
+    public List<Workspace> findAvailableWorkspacesInOfficeBetweenDates(Integer officeId, Date start, Date end) {
+        return workspaceDao.findAvailableWorkspacesInOfficeBetweenDates(officeId, start, end);
+    }
 
     public List<Workspace> findWorkspacesByOfficeId(int id) {
         return workspaceDao.findWorkspacesByOfficeId(id);

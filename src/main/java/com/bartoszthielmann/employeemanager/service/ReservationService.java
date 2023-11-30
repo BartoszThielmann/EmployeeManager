@@ -5,12 +5,14 @@ import com.bartoszthielmann.employeemanager.dao.reservation.ReservationDao;
 import com.bartoszthielmann.employeemanager.dao.workspace.WorkspaceDao;
 import com.bartoszthielmann.employeemanager.entity.Reservation;
 import com.bartoszthielmann.employeemanager.entity.ReservationDto;
+import com.bartoszthielmann.employeemanager.entity.Workspace;
 import com.bartoszthielmann.employeemanager.exception.WorkspaceNotAvailableException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -27,6 +29,22 @@ public class ReservationService {
 
     public List<Reservation> findAll() {
         return reservationDao.findAll();
+    }
+
+    public List<ReservationDto> findWorkspaceReservationsBetweenDates(Integer workspaceId, Date start, Date end) {
+        List<Reservation> reservationsList = reservationDao.findWorkspaceReservationsBetweenDates(workspaceId, start, end);
+        // Map Reservation to ReservationDto
+        List <ReservationDto> reservationDtoList = reservationsList.stream()
+                .map(reservation -> {
+                    ReservationDto reservationDto = new ReservationDto();
+                    reservationDto.setStart(reservation.getStart());
+                    reservationDto.setEnd(reservation.getEnd());
+                    reservationDto.setUserId(reservation.getUser().getId());
+                    reservationDto.setWorkspaceId(reservation.getWorkspace().getId());
+                    return reservationDto;
+                }).collect(Collectors.toList());
+
+        return reservationDtoList;
     }
 
     @Transactional

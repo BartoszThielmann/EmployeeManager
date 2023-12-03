@@ -6,6 +6,8 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public class UserInfoDaoImpl implements UserInfoDao {
@@ -14,6 +16,11 @@ public class UserInfoDaoImpl implements UserInfoDao {
 
     public UserInfoDaoImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    public List<UserInfo> findAll() {
+        TypedQuery<UserInfo> query = entityManager.createQuery("FROM UserInfo", UserInfo.class);
+        return query.getResultList();
     }
 
     public UserInfo findByUserId(int id) {

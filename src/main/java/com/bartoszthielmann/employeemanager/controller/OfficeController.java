@@ -1,5 +1,6 @@
 package com.bartoszthielmann.employeemanager.controller;
 
+import com.bartoszthielmann.employeemanager.dto.OfficeDto;
 import com.bartoszthielmann.employeemanager.entity.Office;
 import com.bartoszthielmann.employeemanager.entity.Workspace;
 import com.bartoszthielmann.employeemanager.service.OfficeService;
@@ -33,7 +34,7 @@ public class OfficeController {
 
     @GetMapping("/list")
     public String showOffices(Model model) {
-        List<Office> offices = officeService.findAll();
+        List<OfficeDto> offices = officeService.findAll();
         model.addAttribute("offices", offices);
 
         return "office-list";

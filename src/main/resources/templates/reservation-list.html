@@ -29,7 +29,7 @@
       + ${reservation.workspace.office.city}" />
       <td th:text="${reservation.start}" />
       <td th:text="${reservation.end}" />
-      <td th:text="${reservation.user.userInfo.email}" />
+      <td th:text="${reservation.user.username}" />
       <td sec:authorize="hasRole('ROLE_ADMIN')">
         <a th:href="@{/reservations/delete(id=${reservation.id})}" class="btn btn-danger">Delete</a>
       </td>

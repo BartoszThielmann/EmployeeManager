@@ -24,9 +24,9 @@
         </thead>
         <tbody>
             <tr th:each="user : ${users}">
-                <td th:text="${user.getUserInfo().getFirstName()}" />
-                <td th:text="${user.getUserInfo().getLastName()}" />
-                <td th:text="${user.getUserInfo().getEmail()}" />
+                <td th:text="${user.firstName}" />
+                <td th:text="${user.lastName}" />
+                <td th:text="${user.email}" />
                 <td sec:authorize="hasRole('ROLE_ADMIN')">
                     <a th:href="@{/users/update(id=${user.id})}" class="btn btn-primary">Edit</a>
                     <a th:href="@{/users/delete(id=${user.id})}" class="btn btn-danger">Delete</a>

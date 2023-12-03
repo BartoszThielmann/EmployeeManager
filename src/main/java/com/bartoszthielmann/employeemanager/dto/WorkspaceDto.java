@@ -28,4 +28,12 @@ public class WorkspaceDto {
     public void setName(String name) {
         this.name = name;
     }
+
+    public OfficeDto getOffice() {
+        return office;
+    }
+
+    public void setOffice(OfficeDto office) {
+        this.office = office;
+    }
 }

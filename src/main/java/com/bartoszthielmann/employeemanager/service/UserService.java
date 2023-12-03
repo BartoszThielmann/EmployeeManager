@@ -116,7 +116,7 @@ public class UserService implements FieldValueExists {
         userInfo.setFirstName(firstName);
         userInfo.setLastName(lastName);
         userInfo.setEmail(username + "@bth.com");
-        user.setUserInfo(userInfo);
+        userInfo.setUser(user);
 
         Set<ConstraintViolation<User>> userViolations = validator.validate(user);
         if (!userViolations.isEmpty()) {

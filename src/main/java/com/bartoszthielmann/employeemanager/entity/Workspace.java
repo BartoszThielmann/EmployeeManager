@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -55,6 +56,7 @@ public class Workspace {
     }
 
     public void setOffice(Office office) {
+        // office.addWorkspace(this); ???
         this.office = office;
     }
 
@@ -64,6 +66,13 @@ public class Workspace {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public void addReservation(Reservation reservation) {
+        if (this.reservations == null) {
+            this.reservations = new ArrayList<>();
+        }
+        this.reservations.add(reservation);
     }
 
     @Override

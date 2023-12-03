@@ -85,11 +85,11 @@ public class Office {
         this.workspaces = workspaces;
     }
 
-    public void addWorkspace() {
+    public void addWorkspace(Workspace workspace) {
         if (this.workspaces == null) {
             this.workspaces = new ArrayList<>();
         }
-        this.workspaces.add(new Workspace());
+        this.workspaces.add(workspace);
     }
 
     @Override

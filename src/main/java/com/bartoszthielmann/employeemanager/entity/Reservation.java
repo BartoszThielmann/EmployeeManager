@@ -67,6 +67,7 @@ public class Reservation {
     }
 
     public void setUser(User user) {
+        user.addReservation(this);
         this.user = user;
     }
 
@@ -75,6 +76,7 @@ public class Reservation {
     }
 
     public void setWorkspace(Workspace workspace) {
+        workspace.addReservation(this);
         this.workspace = workspace;
     }
 

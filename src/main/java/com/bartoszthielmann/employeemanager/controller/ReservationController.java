@@ -36,7 +36,7 @@ public class ReservationController {
 
     @GetMapping("/list")
     public String showReservations(Model model) {
-        List<Reservation> reservations = reservationService.findAll();
+        List<com.bartoszthielmann.employeemanager.dto.ReservationDto> reservations = reservationService.findAll();
         model.addAttribute("reservations", reservations);
 
         return "reservation-list";

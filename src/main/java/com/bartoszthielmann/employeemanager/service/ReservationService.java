@@ -7,10 +7,12 @@ import com.bartoszthielmann.employeemanager.entity.Reservation;
 import com.bartoszthielmann.employeemanager.entity.ReservationDto;
 import com.bartoszthielmann.employeemanager.entity.Workspace;
 import com.bartoszthielmann.employeemanager.exception.WorkspaceNotAvailableException;
+import com.bartoszthielmann.employeemanager.mapper.ReservationMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,15 +22,21 @@ public class ReservationService {
     private ReservationDao reservationDao;
     private UserDao userDao;
     private WorkspaceDao workspaceDao;
+    private ReservationMapper reservationMapper;
 
-    public ReservationService(ReservationDao reservationDao, UserDao userDao, WorkspaceDao workspaceDao) {
+    public ReservationService(ReservationDao reservationDao, UserDao userDao, WorkspaceDao workspaceDao, ReservationMapper reservationMapper) {
         this.reservationDao = reservationDao;
         this.userDao = userDao;
         this.workspaceDao = workspaceDao;
+        this.reservationMapper = reservationMapper;
     }
 
-    public List<Reservation> findAll() {
-        return reservationDao.findAll();
+    public List<com.bartoszthielmann.employeemanager.dto.ReservationDto> findAll() {
+        List<Reservation> reservations = reservationDao.findAll();
+        List<com.bartoszthielmann.employeemanager.dto.ReservationDto> reservationDtoList = new ArrayList<>();
+        reservations.forEach(reservation -> reservationDtoList.add(reservationMapper.reservationToReservationDto(reservation)));
+
+        return reservationDtoList;
     }
 
     public List<ReservationDto> findWorkspaceReservationsBetweenDates(Integer workspaceId, Date start, Date end) {

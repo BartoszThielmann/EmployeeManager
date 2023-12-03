@@ -1,8 +1,10 @@
 package com.bartoszthielmann.employeemanager.controller;
 
+import com.bartoszthielmann.employeemanager.dto.UserInfoDto;
 import com.bartoszthielmann.employeemanager.entity.Role;
 import com.bartoszthielmann.employeemanager.entity.User;
 import com.bartoszthielmann.employeemanager.entity.UserDto;
+import com.bartoszthielmann.employeemanager.service.UserInfoService;
 import com.bartoszthielmann.employeemanager.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -17,14 +19,16 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
+    private UserInfoService userInfoService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserInfoService userInfoService) {
         this.userService = userService;
+        this.userInfoService = userInfoService;
     }
 
     @GetMapping("/list")
     public String showUsers(Model model) {
-        List<User> users = userService.findAll();
+        List<UserInfoDto> users = userInfoService.findAll();
         model.addAttribute("users", users);
 
         return "listUsers";

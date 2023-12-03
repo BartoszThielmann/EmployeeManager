@@ -1,4 +1,4 @@
-package com.bartoszthielmann.employeemanager.entity;
+package com.bartoszthielmann.employeemanager.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-public class UserDto {
+public class UserFormDto {
 
     @NotNull
     private int id;

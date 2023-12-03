@@ -4,7 +4,7 @@ package com.bartoszthielmann.employeemanager.service;
 import com.bartoszthielmann.employeemanager.dao.user.UserDao;
 import com.bartoszthielmann.employeemanager.entity.Role;
 import com.bartoszthielmann.employeemanager.entity.User;
-import com.bartoszthielmann.employeemanager.entity.UserDto;
+import com.bartoszthielmann.employeemanager.dto.UserFormDto;
 import com.bartoszthielmann.employeemanager.entity.UserInfo;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,18 +38,18 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    private UserDto userDto;
+    private UserFormDto userFormDto;
     private String baseUsername;
     private List<Role> roleList;
 
     @BeforeEach
     public void setup() {
-        userDto = new UserDto();
-        userDto.setId(0);
-        userDto.setFirstName("Joey");
-        userDto.setLastName("Salads");
-        userDto.setPassword("password123");
-        userDto.setRoles(new ArrayList<>(Arrays.asList("1", "2")));
+        userFormDto = new UserFormDto();
+        userFormDto.setId(0);
+        userFormDto.setFirstName("Joey");
+        userFormDto.setLastName("Salads");
+        userFormDto.setPassword("password123");
+        userFormDto.setRoles(new ArrayList<>(Arrays.asList("1", "2")));
 
         baseUsername = "jsalads";
 
@@ -63,7 +63,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_createUserDtoFromUser() {
+    public void test_createUserFormDto() {
         // given
         User user = new User();
         user.setId(1);
@@ -73,15 +73,16 @@ public class UserServiceTest {
         userInfo.setLastName("Salads");
         user.setUserInfo(userInfo);
         user.setRoles(new HashSet<>(roleList));
+        given(userDao.findById(1)).willReturn(user);
 
         // when
-        UserDto userDtoFromUser = userService.createUserDtoFromUser(user);
+        UserFormDto userDtoFromUserForm = userService.createUserFormDto(1);
 
         // then
-        assertThat(userDtoFromUser.getId()).isEqualTo(user.getId());
-        assertThat(userDtoFromUser.getFirstName()).isEqualTo(user.getUserInfo().getFirstName());
-        assertThat(userDtoFromUser.getLastName()).isEqualTo(user.getUserInfo().getLastName());
-        assertThat(userDtoFromUser.getRoles())
+        assertThat(userDtoFromUserForm.getId()).isEqualTo(user.getId());
+        assertThat(userDtoFromUserForm.getFirstName()).isEqualTo(user.getUserInfo().getFirstName());
+        assertThat(userDtoFromUserForm.getLastName()).isEqualTo(user.getUserInfo().getLastName());
+        assertThat(userDtoFromUserForm.getRoles())
                 .contains(String.valueOf(roleList.get(0).getId()), String.valueOf(roleList.get(1).getId()));
     }
 
@@ -95,12 +96,12 @@ public class UserServiceTest {
         given(userDao.save(any(User.class))).willAnswer(invocation -> invocation.getArgument(0));
 
         // when
-        User user = userService.save(userDto);
+        User user = userService.save(userFormDto);
 
         // then
-        assertThat(user.getId()).isEqualTo(userDto.getId());
-        assertThat(user.getUserInfo().getFirstName()).isEqualTo(userDto.getFirstName());
-        assertThat(user.getUserInfo().getLastName()).isEqualTo(userDto.getLastName());
+        assertThat(user.getId()).isEqualTo(userFormDto.getId());
+        assertThat(user.getUserInfo().getFirstName()).isEqualTo(userFormDto.getFirstName());
+        assertThat(user.getUserInfo().getLastName()).isEqualTo(userFormDto.getLastName());
         assertThat(user.getUserInfo().getEmail()).isEqualTo(baseUsername + "@bth.com");
         assertThat(user.getUsername()).isEqualTo(baseUsername);
         assertThat(user.getPassword()).isEqualTo("password");
@@ -114,11 +115,11 @@ public class UserServiceTest {
         given(userDao.save(any(User.class))).willAnswer(invocation -> invocation.getArgument(0));
 
         // when
-        User user = userService.save(userDto);
+        User user = userService.save(userFormDto);
 
         // then
-        assertThat(user.getUserInfo().getFirstName()).isEqualTo(userDto.getFirstName());
-        assertThat(user.getUserInfo().getLastName()).isEqualTo(userDto.getLastName());
+        assertThat(user.getUserInfo().getFirstName()).isEqualTo(userFormDto.getFirstName());
+        assertThat(user.getUserInfo().getLastName()).isEqualTo(userFormDto.getLastName());
         assertThat(user.getUsername()).isEqualTo(baseUsername + "2");
     }
 
@@ -130,11 +131,11 @@ public class UserServiceTest {
         given(userDao.save(any(User.class))).willAnswer(invocation -> invocation.getArgument(0));
 
         // when
-        User user = userService.save(userDto);
+        User user = userService.save(userFormDto);
 
         // then
-        assertThat(user.getUserInfo().getFirstName()).isEqualTo(userDto.getFirstName());
-        assertThat(user.getUserInfo().getLastName()).isEqualTo(userDto.getLastName());
+        assertThat(user.getUserInfo().getFirstName()).isEqualTo(userFormDto.getFirstName());
+        assertThat(user.getUserInfo().getLastName()).isEqualTo(userFormDto.getLastName());
         assertThat(user.getUsername()).isEqualTo(baseUsername + "3");
     }
 }

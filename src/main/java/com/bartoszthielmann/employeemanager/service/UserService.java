@@ -1,10 +1,15 @@
 package com.bartoszthielmann.employeemanager.service;
 
 import com.bartoszthielmann.employeemanager.dao.user.UserDao;
+import com.bartoszthielmann.employeemanager.dao.user.UserInfoDao;
+import com.bartoszthielmann.employeemanager.dto.RoleDto;
+import com.bartoszthielmann.employeemanager.dto.UserDto;
 import com.bartoszthielmann.employeemanager.entity.Role;
 import com.bartoszthielmann.employeemanager.entity.User;
-import com.bartoszthielmann.employeemanager.entity.UserDto;
+import com.bartoszthielmann.employeemanager.dto.UserFormDto;
 import com.bartoszthielmann.employeemanager.entity.UserInfo;
+import com.bartoszthielmann.employeemanager.mapper.RoleMapper;
+import com.bartoszthielmann.employeemanager.mapper.UserMapper;
 import jakarta.validation.ConstraintViolation;
 import org.hibernate.exception.ConstraintViolationException;
 import jakarta.validation.Validator;
@@ -27,50 +32,65 @@ import java.lang.reflect.Array;
 public class UserService implements FieldValueExists {
 
     private UserDao userDao;
-    private UserInfoService userInfoService;
+    private UserInfoDao userInfoDao;
     private PasswordEncoder passwordEncoder;
     private Validator validator;
+    private RoleMapper roleMapper;
+    private UserMapper userMapper;
 
-    public UserService(UserDao userDao, UserInfoService userInfoService, PasswordEncoder passwordEncoder,
-                       Validator validator) {
+    public UserService(UserDao userDao, UserInfoDao userInfoDao, PasswordEncoder passwordEncoder,
+                       Validator validator, RoleMapper roleMapper, UserMapper userMapper) {
         this.userDao = userDao;
-        this.userInfoService = userInfoService;
+        this.userInfoDao = userInfoDao;
         this.passwordEncoder = passwordEncoder;
         this.validator = validator;
+        this.roleMapper = roleMapper;
+        this.userMapper = userMapper;
     }
 
-    public List<User> findAll() {
-        return userDao.findAll();
+    public List<UserDto> findAll() {
+        List<User> users = userDao.findAll();
+        List<UserDto> userDtoList = new ArrayList<>();
+        users.forEach(user -> userDtoList.add(userMapper.userToUserDto(user)));
+        return userDtoList;
     }
 
-    public User findById(int id) {
-        return userDao.findById(id);
+    public UserDto findById(int id) {
+        User user = userDao.findById(id);
+        return userMapper.userToUserDto(user);
     }
 
     public List<String> findUsernamesByPrefix(String prefix) {
         return userDao.findUsernamesByPrefix(prefix);
     }
 
-    public List<Role> findAllRoles() {
-        return userDao.findAllRoles();
+    public List<RoleDto> findAllRoles() {
+        List<Role> roles = userDao.findAllRoles();
+        List<RoleDto> roleDtoList = new ArrayList<>();
+        roles.forEach(role -> roleDtoList.add(roleMapper.roleToRoleDto(role)));
+        return roleDtoList;
     }
 
-    public List<Role> findRolesByIds(List<Integer> idList) {
-        return userDao.findRolesByIds(idList);
+    public List<RoleDto> findRolesByIds(List<Integer> idList) {
+        List<Role> roles = userDao.findRolesByIds(idList);
+        List<RoleDto> roleDtoList = new ArrayList<>();
+        roles.forEach(role -> roleDtoList.add(roleMapper.roleToRoleDto(role)));
+        return roleDtoList;
     }
 
-    public UserDto createUserDtoFromUser(User user) {
-        UserDto userDto = new UserDto();
+    public UserFormDto createUserFormDto(Integer userId) {
+        User user = userDao.findById(userId);
         UserInfo userInfo = user.getUserInfo();
-        userDto.setId(user.getId());
-        userDto.setFirstName(userInfo.getFirstName());
-        userDto.setLastName(userInfo.getLastName());
+        UserFormDto userFormDto = new UserFormDto();
+        userFormDto.setId(user.getId());
+        userFormDto.setFirstName(userInfo.getFirstName());
+        userFormDto.setLastName(userInfo.getLastName());
         List<String> rolesList = new ArrayList<>();
         for (Role role : user.getRoles()) {
             rolesList.add(String.valueOf(role.getId()));
         }
-        userDto.setRoles(rolesList);
-        return userDto;
+        userFormDto.setRoles(rolesList);
+        return userFormDto;
     }
 
     @Transactional
@@ -79,18 +99,18 @@ public class UserService implements FieldValueExists {
     }
 
     @Transactional
-    public User save(UserDto userDto) {
+    public User save(UserFormDto userFormDto) {
         User user = new User();
-        String firstName = userDto.getFirstName();
-        String lastName = userDto.getLastName();
+        String firstName = userFormDto.getFirstName();
+        String lastName = userFormDto.getLastName();
         String username = generateStandardUsername(firstName, lastName);
 
-        user.setId(userDto.getId());
+        user.setId(userFormDto.getId());
         user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(userFormDto.getPassword()));
         user.setEnabled(true);
 
-        List<String> roles = userDto.getRoles();
+        List<String> roles = userFormDto.getRoles();
         if (roles != null) {
             List<Integer> rolesIds = new ArrayList<>();
             for (String str : roles) {
@@ -101,14 +121,14 @@ public class UserService implements FieldValueExists {
                 }
             }
             if (!rolesIds.isEmpty()) {
-                Set<Role> rolesSet = new HashSet<Role>(findRolesByIds(rolesIds));
+                Set<Role> rolesSet = new HashSet<Role>(userDao.findRolesByIds(rolesIds));
                 user.setRoles(rolesSet);
             }
         }
 
         UserInfo userInfo;
-        if (userDto.getId() != 0) {
-            userInfo = userInfoService.findByUserId(userDto.getId());
+        if (userFormDto.getId() != 0) {
+            userInfo = userInfoDao.findByUserId(userFormDto.getId());
         } else {
             userInfo = new UserInfo();
         }

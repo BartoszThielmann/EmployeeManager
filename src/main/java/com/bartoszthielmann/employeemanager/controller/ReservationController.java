@@ -2,7 +2,6 @@ package com.bartoszthielmann.employeemanager.controller;
 
 import com.bartoszthielmann.employeemanager.entity.Reservation;
 import com.bartoszthielmann.employeemanager.entity.ReservationDto;
-import com.bartoszthielmann.employeemanager.entity.User;
 import com.bartoszthielmann.employeemanager.entity.Workspace;
 import com.bartoszthielmann.employeemanager.exception.WorkspaceNotAvailableException;
 import com.bartoszthielmann.employeemanager.security.CustomUserDetails;
@@ -47,7 +46,6 @@ public class ReservationController {
                               @RequestParam(name="workspaceId", required = false) Integer workspaceId,
                               @RequestParam(name="startDate", required = false) Date startDate,
                               @RequestParam(name="endDate", required = false) Date endDate) {
-        List<User> users = userService.findAll();
         List<Workspace> workspaces = workspaceService.findWorkspacesByOfficeId(id);
         ReservationDto reservationDto = new ReservationDto();
         reservationDto.setOfficeId(id);

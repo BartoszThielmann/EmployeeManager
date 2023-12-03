@@ -1,6 +1,7 @@
 package com.bartoszthielmann.employeemanager.controller;
 
 import com.bartoszthielmann.employeemanager.entity.Office;
+import com.bartoszthielmann.employeemanager.entity.Workspace;
 import com.bartoszthielmann.employeemanager.service.OfficeService;
 import com.bartoszthielmann.employeemanager.service.WorkspaceService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,7 +56,7 @@ public class OfficeController {
 
     @RequestMapping(value = "/save", params = {"addWorkspace"})
     public String addWorkspace(@ModelAttribute Office office) {
-        office.addWorkspace();
+        office.addWorkspace(new Workspace());
         return "/office-form";
     }
 

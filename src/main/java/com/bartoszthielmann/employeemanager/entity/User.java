@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -86,9 +88,6 @@ public class User {
 
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
-        if (userInfo != null) {
-            userInfo.setUser(this);
-        }
     }
 
     public Set<Role> getRoles() {
@@ -96,7 +95,16 @@ public class User {
     }
 
     public void setRoles(Set<Role> roles) {
+        // roles.forEach(role -> role.getUsers().add(this)); ???
         this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        if (this.roles == null) {
+            this.roles = new HashSet<>();
+        }
+        role.getUsers().add(this);
+        this.roles.add(role);
     }
 
     public List<Reservation> getReservations() {
@@ -105,5 +113,12 @@ public class User {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public void addReservation(Reservation reservation) {
+        if (this.reservations == null) {
+            this.reservations = new ArrayList<>();
+        }
+        this.reservations.add(reservation);
     }
 }

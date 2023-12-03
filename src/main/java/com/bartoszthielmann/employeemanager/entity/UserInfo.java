@@ -71,6 +71,7 @@ public class UserInfo {
     }
 
     public void setUser(User user) {
+        user.setUserInfo(this);
         this.user = user;
     }
 }

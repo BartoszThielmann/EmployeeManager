@@ -4,7 +4,7 @@ import com.bartoszthielmann.employeemanager.dao.reservation.ReservationDao;
 import com.bartoszthielmann.employeemanager.dao.user.UserDao;
 import com.bartoszthielmann.employeemanager.dao.workspace.WorkspaceDao;
 import com.bartoszthielmann.employeemanager.entity.Reservation;
-import com.bartoszthielmann.employeemanager.entity.ReservationDto;
+import com.bartoszthielmann.employeemanager.dto.ReservationFormDto;
 import com.bartoszthielmann.employeemanager.entity.User;
 import com.bartoszthielmann.employeemanager.entity.Workspace;
 import com.bartoszthielmann.employeemanager.exception.WorkspaceNotAvailableException;
@@ -36,7 +36,7 @@ public class ReservationServiceTest {
     @InjectMocks
     ReservationService reservationService;
 
-    ReservationDto reservationDto;
+    ReservationFormDto reservationFormDto;
     Date start;
     Date end;
     User user;
@@ -44,13 +44,13 @@ public class ReservationServiceTest {
 
     @BeforeEach
     public void setup() {
-        reservationDto = new ReservationDto();
+        reservationFormDto = new ReservationFormDto();
         start = new Date(1700697600); // November 23, 2023 12:00:00 AM
         end = new Date(1700956799); // November 25, 2023 11:59:59 PM
-        reservationDto.setStart(start);
-        reservationDto.setEnd(end);
-        reservationDto.setWorkspaceId(1);
-        reservationDto.setUserId(1);
+        reservationFormDto.setStart(start);
+        reservationFormDto.setEnd(end);
+        reservationFormDto.setWorkspaceId(1);
+        reservationFormDto.setUserId(1);
 
         user = new User();
         user.setId(1);
@@ -61,21 +61,21 @@ public class ReservationServiceTest {
 
 
     @Test
-    public void test_createReservationFromDto() {
+    public void test_saveFromReservationFormDto() {
         // given
         given(reservationDao.findWorkspaceReservationsBetweenDates(any(), any(), any()))
                 .willReturn(Collections.emptyList());
-        given(userDao.findById(reservationDto.getUserId())).willReturn(user);
-        given(workspaceDao.findById(reservationDto.getWorkspaceId())).willReturn(workspace);
+        given(userDao.findById(reservationFormDto.getUserId())).willReturn(user);
+        given(workspaceDao.findById(reservationFormDto.getWorkspaceId())).willReturn(workspace);
 
         // when
-        Reservation reservation = reservationService.createReservationFromDto(reservationDto);
+        Reservation reservation = reservationService.save(reservationFormDto);
 
         // then
-        assertThat(reservationDto.getStart()).isEqualTo(reservation.getStart());
-        assertThat(reservationDto.getEnd()).isEqualTo(reservation.getEnd());
-        assertThat(reservationDto.getUserId()).isEqualTo(reservation.getUser().getId());
-        assertThat(reservationDto.getWorkspaceId()).isEqualTo(reservation.getWorkspace().getId());
+        assertThat(reservationFormDto.getStart()).isEqualTo(reservation.getStart());
+        assertThat(reservationFormDto.getEnd()).isEqualTo(reservation.getEnd());
+        assertThat(reservationFormDto.getUserId()).isEqualTo(reservation.getUser().getId());
+        assertThat(reservationFormDto.getWorkspaceId()).isEqualTo(reservation.getWorkspace().getId());
     }
 
     @Test
@@ -86,6 +86,6 @@ public class ReservationServiceTest {
 
         // then/when
         assertThrows(WorkspaceNotAvailableException.class,
-                () -> reservationService.createReservationFromDto(reservationDto));
+                () -> reservationService.save(reservationFormDto));
     }
 }

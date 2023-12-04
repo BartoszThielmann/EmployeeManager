@@ -1,4 +1,4 @@
-package com.bartoszthielmann.employeemanager.entity;
+package com.bartoszthielmann.employeemanager.dto;
 
 import com.bartoszthielmann.employeemanager.validation.DateRange;
 import jakarta.validation.constraints.Future;
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.sql.Date;
 
 @DateRange(startField = "start", endField = "end")
-public class ReservationDto {
+public class ReservationFormDto {
 
     @Future private Date start;
 
@@ -18,9 +18,6 @@ public class ReservationDto {
     @NotNull private int workspaceId;
 
     private int officeId;
-
-    public ReservationDto() {
-    }
 
     public Date getStart() {
         return start;
@@ -64,11 +61,12 @@ public class ReservationDto {
 
     @Override
     public String toString() {
-        return "ReservationForm{" +
+        return "ReservationFormDto{" +
                 "start=" + start +
                 ", end=" + end +
                 ", userId=" + userId +
                 ", workspaceId=" + workspaceId +
+                ", officeId=" + officeId +
                 '}';
     }
 }

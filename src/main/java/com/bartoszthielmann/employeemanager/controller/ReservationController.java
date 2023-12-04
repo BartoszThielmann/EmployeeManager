@@ -1,8 +1,8 @@
 package com.bartoszthielmann.employeemanager.controller;
 
-import com.bartoszthielmann.employeemanager.entity.Reservation;
-import com.bartoszthielmann.employeemanager.entity.ReservationDto;
-import com.bartoszthielmann.employeemanager.entity.Workspace;
+import com.bartoszthielmann.employeemanager.dto.ReservationFormDto;
+import com.bartoszthielmann.employeemanager.dto.WorkspaceDto;
+import com.bartoszthielmann.employeemanager.dto.ReservationDto;
 import com.bartoszthielmann.employeemanager.exception.WorkspaceNotAvailableException;
 import com.bartoszthielmann.employeemanager.security.CustomUserDetails;
 import com.bartoszthielmann.employeemanager.service.UserService;
@@ -35,7 +35,7 @@ public class ReservationController {
 
     @GetMapping("/list")
     public String showReservations(Model model) {
-        List<com.bartoszthielmann.employeemanager.dto.ReservationDto> reservations = reservationService.findAll();
+        List<ReservationDto> reservations = reservationService.findAll();
         model.addAttribute("reservations", reservations);
 
         return "reservation-list";
@@ -46,21 +46,23 @@ public class ReservationController {
                               @RequestParam(name="workspaceId", required = false) Integer workspaceId,
                               @RequestParam(name="startDate", required = false) Date startDate,
                               @RequestParam(name="endDate", required = false) Date endDate) {
-        List<Workspace> workspaces = workspaceService.findWorkspacesByOfficeId(id);
-        ReservationDto reservationDto = new ReservationDto();
-        reservationDto.setOfficeId(id);
+        List<WorkspaceDto> workspaces = workspaceService.findWorkspacesByOfficeId(id);
+        ReservationFormDto reservationFormDto = new ReservationFormDto();
+        reservationFormDto.setOfficeId(id);
         model.addAttribute("workspaces", workspaces);
-        model.addAttribute("reservationDto", reservationDto);
+        model.addAttribute("reservationDto", reservationFormDto);
 
         if (workspaceId != null && startDate != null && endDate != null) {
             List<ReservationDto> conflictingReservations = reservationService
                     .findWorkspaceReservationsBetweenDates(workspaceId, startDate, endDate);
             model.addAttribute("conflictingReservations", conflictingReservations);
 
-            List<Workspace> freeWorkspaces = workspaceService.findAvailableWorkspacesInOfficeBetweenDates(id, startDate, endDate);
+            List<WorkspaceDto> freeWorkspaces = workspaceService
+                    .findAvailableWorkspacesInOfficeBetweenDates(id, startDate, endDate);
             model.addAttribute("freeWorkspaces", freeWorkspaces);
 
-            model.addAttribute("selectedWorkspace", workspaceService.findById(workspaceId));
+            WorkspaceDto workspaceDto = workspaceService.findById(workspaceId);
+            model.addAttribute("selectedWorkspace", workspaceDto);
             model.addAttribute("selectedStart", startDate);
             model.addAttribute("selectedEnd", endDate);
         }
@@ -69,25 +71,23 @@ public class ReservationController {
     }
 
     @PostMapping("/save")
-    public String saveReservation(@Valid @ModelAttribute ReservationDto reservationDto, BindingResult bindingResult,
-                                  Authentication authentication) {
+    public String saveReservation(@Valid @ModelAttribute ReservationFormDto reservationFormDto,
+                                  BindingResult bindingResult, Authentication authentication) {
+        int officeId = reservationFormDto.getOfficeId();
         if (bindingResult.hasErrors()) {
-            int officeId = reservationDto.getOfficeId();
             return "redirect:create?id=" + officeId + "&Error";
         }
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        reservationDto.setUserId(userDetails.getId());
-        Reservation reservation;
+        Integer userId = userDetails.getId();
+        reservationFormDto.setUserId(userId);
         try {
-            reservation = reservationService.createReservationFromDto(reservationDto);
+            reservationService.save(reservationFormDto);
         } catch (WorkspaceNotAvailableException e) {
-            int officeId = reservationDto.getOfficeId();
             return "redirect:create?id=" + officeId + "&NotAvailable"
-                    + "&workspaceId=" + reservationDto.getWorkspaceId()
-                    + "&startDate=" + reservationDto.getStart()
-                    + "&endDate=" + reservationDto.getEnd();
+                    + "&workspaceId=" + reservationFormDto.getWorkspaceId()
+                    + "&startDate=" + reservationFormDto.getStart()
+                    + "&endDate=" + reservationFormDto.getEnd();
         }
-        reservationService.save(reservation);
 
         return "redirect:list";
     }

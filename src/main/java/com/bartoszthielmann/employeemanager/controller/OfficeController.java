@@ -1,8 +1,7 @@
 package com.bartoszthielmann.employeemanager.controller;
 
 import com.bartoszthielmann.employeemanager.dto.OfficeDto;
-import com.bartoszthielmann.employeemanager.entity.Office;
-import com.bartoszthielmann.employeemanager.entity.Workspace;
+import com.bartoszthielmann.employeemanager.dto.WorkspaceDto;
 import com.bartoszthielmann.employeemanager.service.OfficeService;
 import com.bartoszthielmann.employeemanager.service.WorkspaceService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +27,7 @@ public class OfficeController {
 
     @GetMapping("/create")
     public String createOffice(Model model) {
-        model.addAttribute("office", new Office());
+        model.addAttribute("office", new OfficeDto());
         return "office-form";
     }
 
@@ -42,32 +41,30 @@ public class OfficeController {
 
     @GetMapping("/update")
     public String updateOffice(@RequestParam("id") int id, Model model) {
-        model.addAttribute("office", officeService.findById(id));
+        OfficeDto officeDto = officeService.findById(id);
+        model.addAttribute("office", officeDto);
         return "office-form";
     }
 
     @PostMapping("/save")
-    public String saveOffice(@Valid @ModelAttribute Office office, BindingResult bindingResult) {
+    public String saveOffice(@Valid @ModelAttribute("office") OfficeDto officeDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "office-form";
         }
-        officeService.save(office);
+        officeService.save(officeDto);
         return "redirect:list";
     }
 
     @RequestMapping(value = "/save", params = {"addWorkspace"})
-    public String addWorkspace(@ModelAttribute Office office) {
-        office.addWorkspace(new Workspace());
+    public String addWorkspace(@ModelAttribute("office") OfficeDto officeDto) {
+        officeDto.addWorkspace(new WorkspaceDto());
         return "/office-form";
     }
 
     @RequestMapping(value = "/save", params = {"removeWorkspace"})
-    public String removeWorkspace(@ModelAttribute Office office, HttpServletRequest req) {
-        // When "remove" is clicked this immediately removes Workspace from database
-        // This does not work ideally and will have to be refactored
-        workspaceService.deleteById(office.getWorkspaces()
-                .get(Integer.parseInt(req.getParameter("removeWorkspace"))).getId());
-        office.getWorkspaces().remove(Integer.parseInt(req.getParameter("removeWorkspace")));
+    public String removeWorkspace(@ModelAttribute("office") OfficeDto officeDto, HttpServletRequest req) {
+        int workspaceIndex = Integer.parseInt(req.getParameter("removeWorkspace"));
+        officeDto.getWorkspaces().remove(workspaceIndex);
         return "/office-form";
     }
 

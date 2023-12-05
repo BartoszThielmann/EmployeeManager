@@ -27,6 +27,14 @@ public class OfficeDaoImpl implements OfficeDao {
         return entityManager.find(Office.class, id);
     }
 
+    public Office findByWorkspaceId(int id) {
+        TypedQuery<Office> query = entityManager.createQuery(
+                "SELECT o FROM Office o JOIN o.workspaces w WHERE w.id = :workspaceId", Office.class);
+        query.setParameter("workspaceId", id);
+
+        return query.getSingleResult();
+    }
+
     @Override
     public void deleteById(int id) {
         Office office = entityManager.find(Office.class, id);

@@ -25,13 +25,13 @@
     </thead>
     <tbody>
     <tr th:each="reservation : ${reservations}">
-      <td th:text="${reservation.workspace.name} + ', ' + ${reservation.workspace.office.streetAddress} + ', '
-      + ${reservation.workspace.office.city}" />
-      <td th:text="${reservation.start}" />
-      <td th:text="${reservation.end}" />
-      <td th:text="${reservation.user.username}" />
+      <td th:text="${reservation.key.workspace.name} + ', ' + ${reservation.value.streetAddress} +
+      ', ' + ${reservation.value.city}">
+      <td th:text="${reservation.key.start}" />
+      <td th:text="${reservation.key.end}" />
+      <td th:text="${reservation.key.user.username}" />
       <td sec:authorize="hasRole('ROLE_ADMIN')">
-        <a th:href="@{/reservations/delete(id=${reservation.id})}" class="btn btn-danger">Delete</a>
+        <a th:href="@{/reservations/delete(id=${reservation.key.id})}" class="btn btn-danger">Delete</a>
       </td>
     </tr>
     </tbody>

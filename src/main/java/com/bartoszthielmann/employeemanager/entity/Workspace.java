@@ -56,7 +56,6 @@ public class Workspace {
     }
 
     public void setOffice(Office office) {
-        // office.addWorkspace(this); ???
         this.office = office;
     }
 

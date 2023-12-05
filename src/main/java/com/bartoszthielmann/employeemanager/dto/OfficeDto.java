@@ -1,7 +1,12 @@
 package com.bartoszthielmann.employeemanager.dto;
 
+
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class OfficeDto {
@@ -16,6 +21,8 @@ public class OfficeDto {
     @NotBlank(message="This field can't be blank")
     @Size(min=2, max=2, message="Length must be 2")
     private String country;
+    @Valid
+    private List<WorkspaceDto> workspaces;
 
     public int getId() {
         return id;
@@ -47,5 +54,20 @@ public class OfficeDto {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public List<WorkspaceDto> getWorkspaces() {
+        return workspaces;
+    }
+
+    public void setWorkspaces(List<WorkspaceDto> workspaces) {
+        this.workspaces = workspaces;
+    }
+
+    public void addWorkspace(WorkspaceDto workspaceDto) {
+        if (this.workspaces == null) {
+            this.workspaces = new ArrayList<>();
+        }
+        this.workspaces.add(workspaceDto);
     }
 }

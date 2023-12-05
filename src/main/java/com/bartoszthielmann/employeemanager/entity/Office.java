@@ -33,7 +33,7 @@ public class Office {
     private String country;
 
     @Valid
-    @OneToMany(mappedBy = "office", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "office", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Workspace> workspaces;
 
     public Office() {
@@ -83,6 +83,7 @@ public class Office {
 
     public void setWorkspaces(List<Workspace> workspaces) {
         this.workspaces = workspaces;
+        workspaces.forEach(workspace -> workspace.setOffice(this));
     }
 
     public void addWorkspace(Workspace workspace) {
@@ -90,6 +91,7 @@ public class Office {
             this.workspaces = new ArrayList<>();
         }
         this.workspaces.add(workspace);
+        workspace.setOffice(this);
     }
 
     @Override

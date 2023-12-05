@@ -2,7 +2,6 @@ package com.bartoszthielmann.employeemanager.service;
 
 import com.bartoszthielmann.employeemanager.dao.office.OfficeDao;
 import com.bartoszthielmann.employeemanager.dto.OfficeDto;
-import com.bartoszthielmann.employeemanager.entity.Workspace;
 import com.bartoszthielmann.employeemanager.mapper.OfficeMapper;
 import org.springframework.stereotype.Service;
 import com.bartoszthielmann.employeemanager.entity.Office;
@@ -29,8 +28,14 @@ public class OfficeService {
         return officeDtos;
     }
 
-    public Office findById(int id) {
-        return officeDao.findById(id);
+    public OfficeDto findById(int id) {
+        Office office = officeDao.findById(id);
+        return officeMapper.officeToOfficeDto(office);
+    }
+
+    public OfficeDto findOfficeByWorkspaceId(int id) {
+        Office office = officeDao.findByWorkspaceId(id);
+        return officeMapper.officeToOfficeDto(office);
     }
 
     @Transactional
@@ -39,13 +44,8 @@ public class OfficeService {
     }
 
     @Transactional
-    public void save(Office office) {
-        List<Workspace> workspacesList = office.getWorkspaces();
-        if (workspacesList != null) {
-            for (Workspace workspace : workspacesList) {
-                workspace.setOffice(office);
-            }
-        }
+    public void save(OfficeDto officeDto) {
+        Office office = officeMapper.officeDtoToOffice(officeDto);
         officeDao.save(office);
     }
 }

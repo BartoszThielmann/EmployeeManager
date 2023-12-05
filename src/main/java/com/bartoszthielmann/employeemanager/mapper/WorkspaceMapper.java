@@ -5,7 +5,7 @@ import com.bartoszthielmann.employeemanager.entity.Workspace;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
-@Mapper(uses = OfficeMapper.class, componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface WorkspaceMapper {
     WorkspaceDto workspaceToWorkspaceDto(Workspace workspace);
     Workspace workspaceDtoToWorkspace(WorkspaceDto workspaceDto);

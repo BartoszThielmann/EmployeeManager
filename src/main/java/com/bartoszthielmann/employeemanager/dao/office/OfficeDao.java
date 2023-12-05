@@ -10,6 +10,8 @@ public interface OfficeDao {
 
     public Office findById(int id);
 
+    public Office findByWorkspaceId(int id);
+
     public void deleteById(int id);
 
     public void save(Office office);

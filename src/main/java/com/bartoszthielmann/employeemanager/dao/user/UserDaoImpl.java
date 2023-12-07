@@ -43,6 +43,14 @@ public class UserDaoImpl implements UserDao {
         return query.getResultList();
     }
 
+    @Override
+    public List<String> findUsernamesByPrefixAndIgnoreUserId(String prefix, Integer id) {
+        String queryString = "SELECT u.username FROM User u WHERE u.username LIKE '" + prefix +
+                "%' AND u.id != " + id + " ORDER BY u.username";
+        TypedQuery<String> query = entityManager.createQuery(queryString, String.class);
+        return query.getResultList();
+    }
+
     public List<Role> findAllRoles() {
         TypedQuery<Role> query = entityManager.createQuery("FROM Role", Role.class);
         return query.getResultList();

@@ -60,10 +60,6 @@ public class UserService implements FieldValueExists {
         return userMapper.userToUserDto(user);
     }
 
-    public List<String> findUsernamesByPrefix(String prefix) {
-        return userDao.findUsernamesByPrefix(prefix);
-    }
-
     public List<RoleDto> findAllRoles() {
         List<Role> roles = userDao.findAllRoles();
         List<RoleDto> roleDtoList = new ArrayList<>();
@@ -103,7 +99,7 @@ public class UserService implements FieldValueExists {
         User user = new User();
         String firstName = userFormDto.getFirstName();
         String lastName = userFormDto.getLastName();
-        String username = generateStandardUsername(firstName, lastName);
+        String username = generateStandardUsername(userFormDto);
 
         user.setId(userFormDto.getId());
         user.setUsername(username);
@@ -163,9 +159,9 @@ public class UserService implements FieldValueExists {
         return userDao.exists(fieldName, (String) value, (Integer) ignoredId);
     }
 
-    private String generateStandardUsername(String firstName, String lastName) {
-        String baseUsername = (firstName.charAt(0) + lastName).toLowerCase();
-        List<String> emails = findUsernamesByPrefix(baseUsername);
+    private String generateStandardUsername(UserFormDto userFormDto) {
+        String baseUsername = (userFormDto.getFirstName().charAt(0) + userFormDto.getLastName()).toLowerCase();
+        List<String> emails = userDao.findUsernamesByPrefixAndIgnoreUserId(baseUsername, userFormDto.getId());
         // Filter for usernames with standard username pattern
         final Pattern p1 = Pattern.compile(baseUsername + "\\d*$");
         List<String> standardUsernames = emails.stream()

@@ -16,6 +16,8 @@ public interface UserDao {
 
     public List<String> findUsernamesByPrefix(String prefix);
 
+    public List<String> findUsernamesByPrefixAndIgnoreUserId(String prefix, Integer id);
+
     public List<Role> findAllRoles();
 
     public List<Role> findRolesByIds(List<Integer> idList);

@@ -11,6 +11,11 @@
 </head>
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
+<div th:if="${param.logout != null}" class="d-flex justify-content-center text-center">
+    <div class="alert alert-success p-1 col-12">
+        <p class="m-0">Logout successful!</p>
+    </div>
+</div>
 <div class="container text-center">
     <h3>Introduction</h3>
     Hello! This is a demo project made with Spring and Spring Boot.<br>

@@ -42,7 +42,7 @@ public class SecurityConfig {
                 )
                 .logout((logout) ->
                         logout
-                            .logoutSuccessUrl("/"))
+                            .logoutSuccessUrl("/?logout"))
                 .httpBasic(withDefaults());
         return http.build();
     }

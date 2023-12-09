@@ -83,7 +83,9 @@ public class Office {
 
     public void setWorkspaces(List<Workspace> workspaces) {
         this.workspaces = workspaces;
-        workspaces.forEach(workspace -> workspace.setOffice(this));
+        if (workspaces != null) {
+            workspaces.forEach(workspace -> workspace.setOffice(this));
+        }
     }
 
     public void addWorkspace(Workspace workspace) {

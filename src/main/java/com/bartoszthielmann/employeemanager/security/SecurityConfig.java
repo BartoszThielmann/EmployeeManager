@@ -2,6 +2,7 @@ package com.bartoszthielmann.employeemanager.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,6 +23,19 @@ public class SecurityConfig {
 
     public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
         this.userDetailsService = customUserDetailsService;
+    }
+
+    @Bean
+    @Order(1)
+    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/api/**")
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().hasRole("ADMIN")
+                )
+                .csrf(csrf -> csrf.disable())
+                .httpBasic(withDefaults());
+        return http.build();
     }
 
     @Bean
